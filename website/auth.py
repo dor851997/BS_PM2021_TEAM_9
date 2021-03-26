@@ -67,7 +67,3 @@ def sign_up():
     #         return redirect(url_for('views.home'))
 
     # return render_template("sign_up.html", user=current_user)
-
-@auth.route('/kidPage')
-def kidPage():
-    return render_template("kidPage.html", user=current_user)

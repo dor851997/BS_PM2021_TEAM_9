@@ -1,0 +1,30 @@
+
+{% extends "base.html" %} {% block title %}kidPage{% endblock %} {% block content
+    %}
+<article>
+    <section class="d-flex flex-row bd-highlight mb-3 bg-secondary">
+        <div class="p-2">
+            <div class="card" style="width: 18rem;">
+                <img src="static/pictures/Animals.webp" class="card-img-top" alt="...">
+                <div class="card-body"> 
+                    <h3 class="card-title"><u>Category:</u> Animal</h3>
+                    <div class="d-flex justify-content-center">
+                        <a href="#" class="btn btn-danger">Start a quiz!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-2">
+            <div class="card" style="width: 18rem;">
+                <img src="static/pictures/nature.jpg" class="card-img-top" alt="...">
+                <div class="card-body"> 
+                    <h3 class="card-title"><u>Category:</u> Nature</h3>
+                    <div class="d-flex justify-content-center">
+                        <a href="#" class="btn btn-danger">Start a quiz!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</article>
+{% endblock %}

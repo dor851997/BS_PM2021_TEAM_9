@@ -1,39 +1,26 @@
 
 from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
-from .models import Note
+
 from . import db
 import json
+from .models import User
 
 views = Blueprint('views', __name__)
 
-
-@views.route('/',methods=['GET', 'POST'])
+@views.route('/kidPage')
 @login_required
-def home():
-    
-    if request.method == 'POST':
-        note = request.form.get('note')
+def kidPage():
+    #users=User.query.all()
+    # us=User.query.filter_by(email='asdad@gmail.com').first()
+    # print(us.email)
+    if current_user.auth=="kid":
+        return render_template("kidPage.html", user=current_user)
+    elif current_user.auth=="editor":
+        flash("No Permission to current user to enter kid page.", category='error')
+        return render_template("editorPage.html", user=current_user)
+    else:
+        flash("No Permission to current user to enter admin page.", category='error')
+        return render_template("editorPage.html", user=current_user)
 
-        if len(note) < 1:
-            flash('Note is too short!', category='error')
-        else:
-            new_note = Note(data=note, user_id=current_user.id)
-            db.session.add(new_note)
-            db.session.commit()
-            flash('Note added!', category='success')
-
-    return render_template("home.html", user=current_user)
-
-
-@views.route('/delete-note', methods=['POST'])
-def delete_note():
-    note = json.loads(request.data)
-    noteId = note['noteId']
-    note = Note.query.get(noteId)
-    if note:
-        if note.user_id == current_user.id:
-            db.session.delete(note)
-            db.session.commit()
-
-    return jsonify({})
+      

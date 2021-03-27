@@ -22,7 +22,8 @@ def login():
                 login_user(user, remember=True)
                 if user.auth=="kid":
                     return redirect(url_for('views.kidPage'))
-                
+                else:
+                    return redirect(url_for('views.adminPage'))
                 
             else:
                 flash('Incorrect password, try again.', category='error')

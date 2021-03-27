@@ -23,4 +23,14 @@ def kidPage():
         flash("No Permission to current user to enter admin page.", category='error')
         return render_template("editorPage.html", user=current_user)
 
-      
+@views.route('/adminPage')
+@login_required
+def adminPage():
+    if current_user.auth=="admin":
+        return render_template("adminPage.html", user=current_user)
+    elif current_user.auth=="kid":
+        flash("No Permission to current user to enter admin page.", category='error')
+        return render_template("kidPage.html", user=current_user)
+    else:
+        flash("No Permission to current user to enter admin page.", category='error')
+        return render_template("editorPage.html", user=current_user)

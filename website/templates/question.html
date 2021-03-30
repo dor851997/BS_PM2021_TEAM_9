@@ -1,0 +1,14 @@
+{% extends "base.html" %} {% block title %}question{% endblock %} {% block content
+    %}
+    <h1 align="center">Questions</h1>
+    <label for="cars">{{user.question}}:</label>
+
+    <select name="cars" id="cars">
+      <option value="volvo">{{user.correct}}</option>
+      <option value="saab">{{user.wrong1}}</option>
+      <option value="mercedes">{{user.wrong2}}</option>
+      <option value="audi">{{user.wrong3}}</option>
+    </select> 
+    <input type="submit" name="submit_button" class="btn btn-danger" value="Submit">
+    
+{% endblock %}

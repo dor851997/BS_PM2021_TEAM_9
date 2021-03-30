@@ -70,7 +70,12 @@ def sign_up():
             db.session.commit()
             login_user(new_user, remember=True)
             flash('Account created!', category='success')
-            return redirect(url_for('views.home'))
+            if new_user.auth=="kid":
+                return redirect(url_for('views.kidPage'))
+            elif new_user.auth=="editor":
+                return redirect(url_for('views.editorPage'))
+            else:
+                return redirect(url_for('views.adminPage'))
 
     return render_template("sign_up.html", user=current_user)
 

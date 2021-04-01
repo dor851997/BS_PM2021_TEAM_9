@@ -4,7 +4,7 @@ from flask_login import login_required, current_user
 
 from . import db
 import json
-from .models import User, Question
+from .models import User, Question,QuestionCategory
 
 views = Blueprint('views', __name__)
 
@@ -15,10 +15,12 @@ def kidPage():
     # us=User.query.filter_by(email='asdad@gmail.com').first()
     # print(us.email)
     if current_user.auth=="kid":
+        
         if request.method == 'POST':
             if request.form['submit_button'] == 'Start a quiz!':
                 return redirect(url_for('views.question'))
-        return render_template("kidPage.html", user=current_user)
+        cats = QuestionCategory.query.all()
+        return render_template("kidPage.html", user=cats)
     elif current_user.auth=="editor":
         flash("No Permission to current user to enter kid page.", category='error')
         return render_template("editorPage.html", user=current_user)
@@ -53,7 +55,7 @@ def editorPage():
 @views.route('/question')
 @login_required
 def question():
-    question = Question.query.all()
+    # question = Question.query.all()
     cat = Question.query.filter_by(cat = "Animal").first()
     print(cat.cat)
     if current_user.auth=="kid":

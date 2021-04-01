@@ -25,22 +25,27 @@
 <form method="POST">
     <article>
         <section class="row bg-secondary">
+            {%for us in user%}
             <div class="p-2">
                 <div class="card" style="width: 18rem;">
-                    <img src="static/pictures/Animals.webp" class="card-img-top" alt="...">
+                    <img src={{us.picture}} class="card-img-top" alt="...">
                     <div class="card-body"> 
-                        <h3 class="card-title"><u>Category:</u> Animal</h3>
+                        <h3 class="card-title"><u>Category:</u> {{us.cat}}</h3>
                         <div class="d-flex justify-content-center">
                             <input type="submit" name="submit_button" class="btn btn-danger" value="Start a quiz!">
                         </div>
                     </div>
                 </div>
             </div>
+            {%endfor%}
+
+
+
             <div class="p-2">
                 <div class="card" style="width: 18rem;">
                     <img src="static/pictures/nature.jpg" class="card-img-top" alt="...">
                     <div class="card-body"> 
-                        <h3 class="card-title"><u>Category:</u> Nature</h3>
+                        <h3 class="card-title"><u>Category:</u> {{user[1].cat}}</h3>
                         <div class="d-flex justify-content-center">
                             <input type="submit" name="submit_button" class="btn btn-danger" value="Start a quiz!">
                         </div>

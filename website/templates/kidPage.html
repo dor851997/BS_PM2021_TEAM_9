@@ -3,22 +3,22 @@
     %}
 <!-- costum of page kide - Preparation of tickets for the quiz. -->
 
-<div>
-    <button onclick="biggerText()">T+</button>
-    <button onclick="lowerText()">T-</button>
+<div class="d-flex justify-content-center">
+    <button onclick="biggerText()" type="button" class="btn btn-info" style="border-color: black;">T+</button>
+    <button onclick="lowerText()" type="button" class="btn btn-info" style="border-color: black;">T-</button>
 </div>
 <div>
-    <p id="textView">Here is some text!</p>
+    <h2 id="textView" class="d-flex justify-content-center"><u>Catalog of quizs</u></h2>
 </div>
 
 <script>
     function biggerText(){
         var x = document.getElementById("textView");
-        x.style.fontSize =  30 + 'px';
+        x.style.fontSize =  50 + 'px';
     }
     function lowerText(){
         var x = document.getElementById("textView");
-        x.style.fontSize = 15 + 'px';
+        x.style.fontSize = 30 + 'px';
     }
 </script>
 

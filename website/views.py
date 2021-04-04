@@ -23,7 +23,13 @@ def kidPage():
 def adminPage():
     
     return render_template("adminPage.html", user=current_user)
-    
+
+@views.route('/userManagment', methods=['GET', 'POST'])
+@login_required
+def userManagment():
+   
+    return render_template("userManagment.html", user=current_user)
+
 @views.route('/editorPage')
 @login_required    
 def editorPage():

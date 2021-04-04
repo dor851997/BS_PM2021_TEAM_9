@@ -1,23 +1,20 @@
 pipeline {
-    agent none
+    agent {
+        docker 
+        {
+            image 'python:3.9.1'
+        }
+    }
     stages {
         stage('Build') {
-            agent {
-                docker {
-                    image 'python:3.9.1'
-                }
-            }
+            
             steps {
-                sh 'python -m pip install --upgrade pip --user'
+                
                 sh 'python -m pip install --no-cache-dir --user -r requirements.txt' 
             }
         }
         stage('Test') {
-            agent {
-                docker {
-                    image 'python:3.9.1'
-                }
-            }
+            
             steps {
                 sh 'pytest'
             }

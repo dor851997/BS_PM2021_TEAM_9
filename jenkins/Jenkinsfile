@@ -8,7 +8,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'pytohn -m pip install virtualenv'
+                sh 'python -m pip install virtualenv'
                 sh 'virtualenv env'
                 sh 'source ./env/bin/activate'
                 sh 'python -m pip install -r requirements.txt' 

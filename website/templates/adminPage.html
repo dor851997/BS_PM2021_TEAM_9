@@ -297,28 +297,30 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {%for us in user%}
                             <tr>
                                 <td>
-                                    <!-- <span class="custom-checkbox">
+                                    <span class="custom-checkbox">
                                         <input type="checkbox" id="checkbox1" name="options[]" value="1">
                                         <label for="checkbox1"></label>
-                                    </span> -->
+                                    </span>
                                 </td>
-                                <td>Mor Elir</td>
-                                <td>Morelir@mail.com</td>
-                                <td>sdfsd1234</td>
-                                <td>Admin</td>
+                                <td>{{us.first_name}}</td>
+                                <td>{{us.email}}</td>
+                                <td>{{us.password}}</td>
+                                <td>{{us.auth}}</td>
                                 <td>
                                     <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                                     <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                                 </td>
                             </tr>
-                            <tr>
+                            {%endfor%}
+                            <!-- <tr>
                                 <td>
-                                    <!-- <span class="custom-checkbox">
+                                    <span class="custom-checkbox">
                                         <input type="checkbox" id="checkbox2" name="options[]" value="1">
                                         <label for="checkbox2"></label>
-                                    </span> -->
+                                    </span> 
                                 </td>
                                 <td>Dor Roz</td>
                                 <td>dorRoz@mail.com</td>
@@ -331,10 +333,10 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <!-- <span class="custom-checkbox">
+                                    <span class="custom-checkbox">
                                         <input type="checkbox" id="checkbox3" name="options[]" value="1">
                                         <label for="checkbox3"></label>
-                                    </span> -->
+                                    </span> 
                                 </td>
                                 <td>Matan Barazi</td>
                                 <td>Matanbar12@mail.com</td>
@@ -347,10 +349,10 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <!-- <span class="custom-checkbox">
+                                    <span class="custom-checkbox">
                                         <input type="checkbox" id="checkbox4" name="options[]" value="1">
                                         <label for="checkbox4"></label>
-                                    </span> -->
+                                    </span>
                                 </td>
                                 <td>shali Kruas</td>
                                 <td>shaliK14@mail.com</td>
@@ -363,10 +365,10 @@
                             </tr>					
                             <tr>
                                 <td>
-                                    <!-- <span class="custom-checkbox">
+                                    <span class="custom-checkbox">
                                         <input type="checkbox" id="checkbox5" name="options[]" value="1">
                                         <label for="checkbox5"></label>
-                                    </span> -->
+                                    </span>
                                 </td>
                                 <td>Dana Choen</td>
                                 <td>dana12@mail.com</td>
@@ -376,7 +378,7 @@
                                     <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                                     <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                                 </td>
-                            </tr> 
+                            </tr>  -->
                         </tbody>
                     </table>
                     <!-- <div class="clearfix">

@@ -21,8 +21,8 @@ def kidPage():
 @views.route('/adminPage', methods=['GET', 'POST'])
 @login_required
 def adminPage():
-    
-    return render_template("adminPage.html", user=current_user)
+    users = User.query.all()
+    return render_template("adminPage.html", user= users)
 
 @views.route('/userManagment', methods=['GET', 'POST'])
 @login_required

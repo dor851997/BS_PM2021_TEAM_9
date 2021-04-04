@@ -8,7 +8,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'ls'
+                sh 'python -m pip install -r requirements.txt'
             }
         }
         stage('Test') {
@@ -18,7 +18,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'py.test'
+                sh 'pytest'
             }
             post {
                 always {

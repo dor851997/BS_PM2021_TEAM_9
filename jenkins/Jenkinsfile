@@ -8,7 +8,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'python -m pip install --no-cache-dir -r requirements.txt' 
+                sh 'python -m pip install --no-cache-dir --user -r requirements.txt' 
             }
         }
         stage('Test') {

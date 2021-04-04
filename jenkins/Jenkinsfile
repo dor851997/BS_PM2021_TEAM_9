@@ -4,17 +4,17 @@ pipeline {
         stage('Build') {
             agent {
                 docker {
-                    image 'python:3.8-buster'
+                    image 'python:3.8'
                 }
             }
-            // steps {
-            //     // sh 'python -m py_compile sources/add2vals.py sources/calc.py'
-            // }
+            steps {
+                sh 'ls'
+            }
         }
         stage('Test') {
             agent {
                 docker {
-                    image 'qnib/pytest'
+                    image 'python:3.8'
                 }
             }
             steps {

@@ -1,18 +1,8 @@
 from main import app
+from . import auth
 import unittest
 import requests
 
-# def addTwoNumbers(a,b):
-#     return a+b
-
-# class AddTest(unittest.TestCase):
-#     #Ensure that flask was set up corrently
-#     def test1(self):
-#         c=addTwoNumbers(5,10)
-#         self.assertEqual(c,15)
-#     def test2(self):
-#         c=addTwoNumbers(5,10)
-#         self.assertNotEqual(c,10)  
 
 class LoginTestCase(unittest.TestCase):
     #Ensure that flask was set up corrently
@@ -31,17 +21,17 @@ class LoginTestCase(unittest.TestCase):
         tester = app.test_client()
         response = tester.post(
             '/',
-            data=dict(username="asd@asd.com", password="1234567"),
+            data=dict(email="kid@gmail.com", password="1234567"),
             follow_redirects=True
         )
-        self.assertIn(b'Login', response.data)
+        self.assertIn(b'kidPage', response.data)
 
     # Ensure login behaves correctly with incorrect credentials
     def test_incorrect_login(self):
         tester = app.test_client()
         response = tester.post(
-            '/kidPage',
-            data=dict(username="wrong", password="wrong"),
+            '/',
+            data=dict(email="wrong", password="wrong"),
             follow_redirects=True
         )
         self.assertIn(b'Login', response.data)
@@ -49,8 +39,8 @@ class LoginTestCase(unittest.TestCase):
     def test_logout(self):
         tester = app.test_client()
         tester.post(
-            '/login',
-            data=dict(username="asd@asd.com", password="1234567"),
+            '/',
+            data=dict(email="kid@gmail.com", password="1234567"),
             follow_redirects=True
         )
         response = tester.get('/logout', follow_redirects=True)

@@ -15,15 +15,10 @@ pipeline {
             }
         }
         stage('Test') {
-            agent {
-                docker {
-                    image 'qnib/pytest'
-                }
-            }
+            
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
-                    // sh 'python -m pytest'
-                    sh 'python -m py_compile website/test.py'
+                    sh 'python -m pytest website/test.py'
                 }
             }
             post {

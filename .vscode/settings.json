@@ -4,5 +4,6 @@
         "--load-plugins",
         "pylint_flask_sqlalchemy",
         "pylint_flask",                 //This package is optional
-    ]
+    ],
+    "cmake.configureOnOpen": true
 }

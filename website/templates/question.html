@@ -33,15 +33,15 @@
 
               <div class="quiz" name="quiz" id="quiz" data-toggle="buttons">
                 <label class="element-animation1 btn btn-lg btn-primary btn-block" onclick="clickedSound()"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{user.wrong3}}">{{user.wrong3}}</label>
-                <label class="element-animation2 btn btn-lg btn-primary btn-block"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{user.wrong2}}">{{user.wrong2}}</label>
-                <label class="element-animation3 btn btn-lg btn-primary btn-block"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{user.wrong1}}">{{user.wrong1}}</label>
-                <label class="element-animation4 btn btn-lg btn-primary btn-block"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{user.correct}}">{{user.correct}}</label>
+                <label class="element-animation2 btn btn-lg btn-primary btn-block" onclick="clickedSound()"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{user.wrong2}}">{{user.wrong2}}</label>
+                <label class="element-animation3 btn btn-lg btn-primary btn-block" onclick="clickedSound()"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{user.wrong1}}">{{user.wrong1}}</label>
+                <label class="element-animation4 btn btn-lg btn-primary btn-block" onclick="clickedSound()"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{user.correct}}">{{user.correct}}</label>
               </div>
           </div>
           <div style="background-color: rgb(218, 204, 199);">
             <h3><u>Score:</u></h3>
             <div class="d-flex justify-content-center">
-            <button type="submit" class="btn btn-success">Next question</button>
+            <button type="submit" class="btn btn-success" onmouseover="nextSound()" >Next question</button>
           </div>
           </div>
           <div class="modal-footer text-muted">

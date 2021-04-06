@@ -57,6 +57,8 @@ def question():
     if request.method == 'POST':
         if request.form['q_answer']==json.loads(session["questions"][0])['correct']:
             session["score"]=session["score"]+50
+            current_user.score = current_user.score + 50
+            db.session.commit()
         else:
             return redirect(url_for('views.kidPage'))
 

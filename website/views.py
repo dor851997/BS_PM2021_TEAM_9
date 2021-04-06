@@ -60,7 +60,8 @@ def question():
             current_user.score = current_user.score + 50
             db.session.commit()
         else:
-            return redirect(url_for('views.kidPage'))
+            return render_template("info.html", user = current_user, question = json.loads(session["questions"][0]))
+            # return redirect(url_for('views.kidPage'))
 
         session["questions"].pop(0)
         if len(session["questions"])!=0:
@@ -89,6 +90,13 @@ def encoder_question(question):
         'correct':question.correct,
         'wrong1':question.wrong1,
         'wrong2':question.wrong2,
-        'wrong3':question.wrong3
+        'wrong3':question.wrong3,
+        'url':question.url
         }
     raise TypeError(f'Object {question} is not type of Person.')  
+
+@views.route('/info')
+@login_required    
+def info():
+    if current_user.auth=="kid":
+        return render_template("kidPage.html")

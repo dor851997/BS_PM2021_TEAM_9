@@ -21,6 +21,7 @@ class Question(db.Model):
     wrong1 = db.Column(db.String(150))
     wrong2 = db.Column(db.String(150))
     wrong3 = db.Column(db.String(150))
+    url = db.Column(db.String(1500))
 
 class QuestionCategory(db.Model):
     id = db.Column(db.Integer, primary_key=True)

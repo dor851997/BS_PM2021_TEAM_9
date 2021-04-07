@@ -16,7 +16,7 @@ def kidPage():
             if request.form['submit_button'] == 'Start a quiz!':
                 return redirect(url_for('views.question'))
         cats = QuestionCategory.query.all()
-        return render_template("kidPage.html", user=cats)
+        return render_template("kidPage.html", user=current_user, cats = cats)
     elif current_user.auth=="editor":
         flash("No Permission to current user to enter kid page.", category='error')
         return render_template("editorPage.html", user=current_user)
@@ -66,7 +66,7 @@ def question():
         session["questions"].pop(0)
         if len(session["questions"])!=0:
             question=json.loads(session["questions"][0])
-            return render_template("question.html", user=question,score=session["score"])
+            return render_template("question.html",user=current_user,  question = question,score=session["score"])
     
     if current_user.auth=="kid":
         questions = Question.query.filter_by(cat = "Animal").all()
@@ -76,7 +76,7 @@ def question():
         session["questions"]=list
         session["score"]=0
         question=json.loads(session["questions"][0])
-        return render_template("question.html", user=question,score=session["score"])
+        return render_template("question.html", user=current_user, question = question,score=session["score"])
     
     
     return render_template("question.html", user=current_user,score=score)
@@ -99,4 +99,4 @@ def encoder_question(question):
 @login_required    
 def info():
     if current_user.auth=="kid":
-        return render_template("kidPage.html")
+        return render_template("kidPage.html",user=current_user)

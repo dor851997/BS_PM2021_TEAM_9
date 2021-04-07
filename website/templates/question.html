@@ -15,7 +15,7 @@
       <div class="modal-content">
         <form method="POST">
           <div class="modal-header">
-              <h2><span class="label label-warning" id="qid">{{user.question}}</span></h2>
+              <h2><span class="label label-warning" id="qid">{{question.question}}</span></h2>
           </div>
           <div class="modal-body">
                 <div class="col-xs-3 col-xs-offset-5">
@@ -32,10 +32,10 @@
               </div>
 
               <div class="quiz" name="quiz" id="quiz" data-toggle="buttons">
-                <label class="element-animation1 btn btn-lg btn-primary btn-block" onclick="clickedSound()"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{user.wrong3}}">{{user.wrong3}}</label>
-                <label class="element-animation2 btn btn-lg btn-primary btn-block" onclick="clickedSound()"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{user.wrong2}}">{{user.wrong2}}</label>
-                <label class="element-animation3 btn btn-lg btn-primary btn-block" onclick="clickedSound()"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{user.wrong1}}">{{user.wrong1}}</label>
-                <label class="element-animation4 btn btn-lg btn-primary btn-block" onclick="clickedSound()"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{user.correct}}">{{user.correct}}</label>
+                <label class="element-animation1 btn btn-lg btn-primary btn-block" onclick="clickedSound()"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{question.wrong3}}">{{question.wrong3}}</label>
+                <label class="element-animation2 btn btn-lg btn-primary btn-block" onclick="clickedSound()"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{question.wrong2}}">{{question.wrong2}}</label>
+                <label class="element-animation3 btn btn-lg btn-primary btn-block" onclick="clickedSound()"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{question.wrong1}}">{{question.wrong1}}</label>
+                <label class="element-animation4 btn btn-lg btn-primary btn-block" onclick="clickedSound()"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{question.correct}}">{{question.correct}}</label>
               </div>
           </div>
           <div style="background-color: rgb(218, 204, 199);">
@@ -51,16 +51,5 @@
       </div>
   </div>
 </div>
-    <!-- <h1 align="center">Questions</h1>
-    <label for="cars">{{user.question}}:</label>
 
-    <select name="cars" id="cars">
-      <option value="volvo">{{user.correct}}</option>
-      <option value="saab">{{user.wrong1}}</option>
-      <option value="mercedes">{{user.wrong2}}</option>
-      <option value="audi">{{user.wrong3}}</option>
-    </select> 
-    <input type="submit" name="submit_button" class="btn btn-danger" value="Submit"> -->
-    
-    
 {% endblock %}

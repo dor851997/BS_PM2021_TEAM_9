@@ -50,37 +50,46 @@ def editorPage():
         return render_template("adminPage.html", user=current_user)
    
 
-score=0
+
 @views.route('/question',methods=['GET', 'POST'])
 @login_required
 def question():
     if request.method == 'POST':
+        print("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
+        if request.form.get('finish1')=="1":
+            print("wwwwwwwwwwwwwwww")
+            return redirect(url_for('views.kidPage'))
         if request.form['q_answer']==json.loads(session["questions"][0])['correct']:
-            session["score"]=session["score"]+50
-            current_user.score = current_user.score + 50
-            db.session.commit()
+            print("dddddddddddddddddd")
+            session["score"]+=50
+            current_user.score=session["score"]
+            db.session.commit() 
         else:
-            return render_template("info.html", user = current_user, question = json.loads(session["questions"][0]))
-            # return redirect(url_for('views.kidPage'))
-
+            print("aaaaaaaaaaaaaaa")
+            return redirect(url_for('views.info'))
+    
         session["questions"].pop(0)
         if len(session["questions"])!=0:
             question=json.loads(session["questions"][0])
             return render_template("question.html",user=current_user,  question = question,score=session["score"])
-    
+        else:
+            return redirect(url_for('views.finishQuestions'))
     if current_user.auth=="kid":
         questions = Question.query.filter_by(cat = "Animal").all()
         list=[]
         for q in questions:
             list.append(json.dumps(q,default=encoder_question))   
         session["questions"]=list
-        session["score"]=0
+        session["score"]=current_user.score
         question=json.loads(session["questions"][0])
         return render_template("question.html", user=current_user, question = question,score=session["score"])
     
-    
-    return render_template("question.html", user=current_user,score=score)
-
+    elif current_user.auth=="editor":
+        flash("No Permission to current user to enter kid page.", category='error')
+        return render_template("editorPage.html", user=current_user)
+    else:
+        flash("No Permission to current user to enter admin page.", category='error')
+        return render_template("adminPage.html", user=current_user)
 
 
 def encoder_question(question):
@@ -95,8 +104,19 @@ def encoder_question(question):
         }
     raise TypeError(f'Object {question} is not type of Person.')  
 
-@views.route('/info')
+
+@views.route('/info',methods=['GET', 'POST'])
 @login_required    
 def info():
+    if request.method == 'POST':
+        return redirect(url_for('views.kidPage'))
     if current_user.auth=="kid":
-        return render_template("kidPage.html",user=current_user)
+        return render_template("info.html", user = current_user, question = json.loads(session["questions"][0]))
+
+@views.route('/finishQuestions',methods=['GET', 'POST'])
+@login_required    
+def finishQuestions():
+    if request.method == 'POST':
+        return redirect(url_for('views.kidPage'))
+    if current_user.auth=="kid":
+        return render_template("finishQuestions.html", user = current_user)

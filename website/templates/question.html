@@ -45,11 +45,18 @@
           </div>
           </div>
           <div class="modal-footer text-muted">
-            <span id="answer"><button type="button" class="btn btn-secondary">Finish game</button></span>
+            <span id="answer"><button id="finish" name="finish1" value="" onClick="finish_click(this.id)" type="submit" class="btn btn-secondary">Finish</button></span>
           </div>
         </form>
       </div>
   </div>
 </div>
-
+<script type="text/javascript">
+  
+  function finish_click(clicked_id)
+  {
+      document.getElementById("finish").value=String(1);
+  }
+</script>  
 {% endblock %}
+

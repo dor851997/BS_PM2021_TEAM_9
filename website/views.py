@@ -1,7 +1,7 @@
 
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for,session
 from flask_login import login_required, current_user
-
+from random import randrange
 from . import db
 import json
 from .models import User, Question,QuestionCategory
@@ -13,7 +13,36 @@ views = Blueprint('views', __name__)
 def kidPage():
     if current_user.auth=="kid":
         if request.method == 'POST':
-            if request.form['submit_button'] == 'Start a quiz!':
+            list=[]
+            if request.form["cat"] == "Animal":
+                questions = Question.query.filter_by(cat = "Animal").all()
+                for q in questions:
+                    list.append(json.dumps(q,default=encoder_question))   
+                session["questions"]=list
+                return redirect(url_for('views.question'))
+            elif request.form["cat"] == "Nature":
+                questions = Question.query.filter_by(cat = "Nature").all()
+                for q in questions:
+                    list.append(json.dumps(q,default=encoder_question))   
+                session["questions"]=list
+                return redirect(url_for('views.question'))
+            elif request.form["cat"] == "Math":
+                questions = Question.query.filter_by(cat = "Math").all()
+                for q in questions:
+                    list.append(json.dumps(q,default=encoder_question))   
+                session["questions"]=list
+                return redirect(url_for('views.question'))
+            elif request.form["cat"] == "History":
+                questions = Question.query.filter_by(cat = "History").all()
+                for q in questions:
+                    list.append(json.dumps(q,default=encoder_question))   
+                session["questions"]=list
+                return redirect(url_for('views.question'))
+            elif request.form["cat"] == "Color":
+                questions = Question.query.filter_by(cat = "Color").all()
+                for q in questions:
+                    list.append(json.dumps(q,default=encoder_question))   
+                session["questions"]=list
                 return redirect(url_for('views.question'))
         cats = QuestionCategory.query.all()
         return render_template("kidPage.html", user=current_user, cats = cats)
@@ -55,17 +84,13 @@ def editorPage():
 @login_required
 def question():
     if request.method == 'POST':
-        print("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
-        if request.form.get('finish1')=="1":
-            print("wwwwwwwwwwwwwwww")
+        if request.form.get('finish1')=="1":        
             return redirect(url_for('views.kidPage'))
         if request.form['q_answer']==json.loads(session["questions"][0])['correct']:
-            print("dddddddddddddddddd")
             session["score"]+=50
             current_user.score=session["score"]
             db.session.commit() 
         else:
-            print("aaaaaaaaaaaaaaa")
             return redirect(url_for('views.info'))
     
         session["questions"].pop(0)
@@ -75,11 +100,11 @@ def question():
         else:
             return redirect(url_for('views.finishQuestions'))
     if current_user.auth=="kid":
-        questions = Question.query.filter_by(cat = "Animal").all()
-        list=[]
-        for q in questions:
-            list.append(json.dumps(q,default=encoder_question))   
-        session["questions"]=list
+        # questions = Question.query.filter_by(cat = "Animal").all()
+        # list=[]
+        # for q in questions:
+        #     list.append(json.dumps(q,default=encoder_question))   
+        # session["questions"]=list
         session["score"]=current_user.score
         question=json.loads(session["questions"][0])
         return render_template("question.html", user=current_user, question = question,score=session["score"])

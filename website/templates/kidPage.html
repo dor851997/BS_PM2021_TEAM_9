@@ -20,6 +20,10 @@
         var x = document.getElementById("textView");
         x.style.fontSize = 30 + 'px';
     }
+    
+    function Quiz(clicked_id){
+        document.getElementById("category").value=String(clicked_id);
+    }
 </script>
 
 <form method="POST">
@@ -27,17 +31,18 @@
         <section class="row bg-secondary">
             {%for cat in cats%}
             <div class="p-2">
-                <div class="card" style="width: 18rem;">
-                    <img src={{cat.picture}} class="card-img-top" alt="...">
+                <div class="card" style="width: 20rem;">
+                    <img src={{cat.picture}} class="card-img-top" alt="..." style="height: 15rem">
                     <div class="card-body"> 
                         <h3 class="card-title"><u>Category:</u> {{cat.cat}}</h3>
                         <div class="d-flex justify-content-center">
-                            <input type="submit" name="submit_button" class="btn btn-danger" value="Start a quiz!">
+                            <input type="submit" id={{cat.cat}}  onClick="Quiz(this.id)" class="btn btn-danger" value="Start a quiz!">
                         </div>
                     </div>
                 </div>
             </div>
             {%endfor%}
+            <input type="hidden" id="category" name="cat" value="" />
         </section>
     </article>
 </form>

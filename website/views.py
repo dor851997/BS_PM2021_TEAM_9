@@ -15,25 +15,26 @@ def kidPage():
     if current_user.auth=="kid":
         if request.method == 'POST':
             list=[]
-            if request.form["cat"] == "Animal":
+            cat=request.form["cat"]
+            if cat == "Animal":
                 questions = Question.query.filter_by(cat = "Animal").all()
                 for q in questions:
                     list.append(json.dumps(q,default=encoder_question))   
                 session["questions"]=list
                 return redirect(url_for('views.question'))
-            elif request.form["cat"] == "Nature":
+            elif cat== "Nature":
                 questions = Question.query.filter_by(cat = "Nature").all()
                 for q in questions:
                     list.append(json.dumps(q,default=encoder_question))   
                 session["questions"]=list
                 return redirect(url_for('views.question'))
-            elif request.form["cat"] == "Math":
+            elif cat == "Math":
                 questions = Question.query.filter_by(cat = "Math").all()
                 for q in questions:
                     list.append(json.dumps(q,default=encoder_question))   
                 session["questions"]=list
                 return redirect(url_for('views.question'))
-            elif request.form["cat"] == "History":
+            elif cat == "History":
                 questions = Question.query.filter_by(cat = "History").all()
                 for q in questions:
                     list.append(json.dumps(q,default=encoder_question))   

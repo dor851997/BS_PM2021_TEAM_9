@@ -22,6 +22,14 @@ pipeline {
                     sh 'python -m py_compile website/test.py'
                 }
             }
+            post {
+                withEnv(["HOME=${env.WORKSPACE}"]) {
+                    always {
+                        junit 'test-reports/results.xml'
+                    }
+                }
+            }
+            
            
         }
     }

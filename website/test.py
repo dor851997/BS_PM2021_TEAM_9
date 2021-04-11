@@ -6,7 +6,7 @@ import requests
 
 class LoginTestCase(unittest.TestCase):
     #Ensure that flask was set up corrently
-    def test_index(self):
+    def test_response(self):
         tester = app.test_client(self)
         response = tester.get('/', content_type='html/text')
         self.assertEqual(response.status_code, 200)

@@ -18,12 +18,14 @@ pipeline {
             
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
-                    sh 'source vemv/bin/activate && pytest' 
+                     sh 'python website/test.py'
+                    //sh 'source vemv/bin/activate && pytest' //matan
                     //sh 'python -m pytest'          //lior change
                     // sh 'python -m py_compile website/test.py'
                     
                 }
             }
+
             // post {
             //     withEnv(["HOME=${env.WORKSPACE}"]) {
             //         always {

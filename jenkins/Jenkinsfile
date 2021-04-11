@@ -19,7 +19,7 @@ pipeline {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
                     //sh 'python -m pytest'          //lior change
-                    sh 'python -m py_compile website/test.py'
+                    sh 'python -m pytest website/test.py'
                 }
             }
             post {

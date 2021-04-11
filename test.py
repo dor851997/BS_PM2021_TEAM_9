@@ -20,11 +20,12 @@ class LoginTestCase(unittest.TestCase):
     #Ensure login behaves correctly with correct credentials
     def test_correct_login(self):
         tester = app.test_client()
-        response = tester.post(
+        tester.post(
             '/',
             data=dict(email="kid@gmail.com", password="1234567"),
             follow_redirects=True
         )
+        response =tester.get('/kidPage', follow_redirects=True)
         self.assertIn(b'kidPage', response.data)
         
 

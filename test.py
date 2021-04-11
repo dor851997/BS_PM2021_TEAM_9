@@ -37,8 +37,8 @@ class LoginTestCase(unittest.TestCase):
             follow_redirects=True
         )
         self.assertIn(b'Login', response.data)
-    Ensure logout behaves correctly
-    
+    #Ensure logout behaves correctly
+
     def test_logout(self):
         tester = app.test_client()
         tester.post(

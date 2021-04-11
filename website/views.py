@@ -1,6 +1,7 @@
 
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for,session
 from flask_login import login_required, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
 from random import randrange
 from . import db
 import json
@@ -58,7 +59,28 @@ def kidPage():
 @login_required
 def adminPage():
     if current_user.auth=="admin":
-        return render_template("adminPage.html", user=current_user)
+        if request.method == 'POST':
+            if request.form.get("addphide")=="1":
+                print("add")
+                user=User.query.filter_by(id = int(request.form.get("id_user"))).first()
+                user.first_name=request.form.get("first_name")
+                user.email=request.form.get("email")
+                user.password=generate_password_hash( request.form.get("password"), method='sha256')
+                user.auth=request.form.get("auth")
+                # new_user = User(email=email, first_name=first_name, password=generate_password_hash(
+                #         password1, method='sha256'),auth=auth)
+                db.session.add(user)
+                db.session.commit()
+                    
+            elif request.form.get("deletephide")=="1":
+                print("delete")
+                user=User.query.filter_by(id = int(request.form.get("id_user"))).first()
+                db.session.delete(user)
+                db.session.commit()
+            users=User.query.all()
+            return render_template("adminPage.html", user= current_user,alluser=users)
+        users = User.query.all()
+        return render_template("adminPage.html", user= current_user ,alluser=users)
     elif current_user.auth=="kid":
         flash("No Permission to current user to enter admin page.", category='error')
         return render_template("kidPage.html", user=current_user)
@@ -100,11 +122,6 @@ def question():
         else:
             return redirect(url_for('views.finishQuestions'))
     if current_user.auth=="kid":
-        # questions = Question.query.filter_by(cat = "Animal").all()
-        # list=[]
-        # for q in questions:
-        #     list.append(json.dumps(q,default=encoder_question))   
-        # session["questions"]=list
         session["score"]=current_user.score
         question=json.loads(session["questions"][0])
         return render_template("question.html", user=current_user, question = question,score=session["score"])

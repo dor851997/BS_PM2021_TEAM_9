@@ -2,7 +2,7 @@
 from main import app
 from website import auth
 import unittest
-import requests
+
 
 
 class LoginTestCase(unittest.TestCase):

@@ -24,13 +24,7 @@ pipeline {
                 }
             }
 
-            // post {
-            //     withEnv(["HOME=${env.WORKSPACE}"]) {
-            //         always {
-            //             junit 'test-reports/results.xml'
-            //         }
-            //     }
-            // }
+          
             
            
         }

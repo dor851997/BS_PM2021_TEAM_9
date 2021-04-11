@@ -28,16 +28,17 @@ class LoginTestCase(unittest.TestCase):
         self.assertIn(b'Catalog of quizs', response.data)
         
 
-    # # Ensure login behaves correctly with incorrect credentials
-    # def test_incorrect_login(self):
-    #     tester = app.test_client()
-    #     response = tester.post(
-    #         '/',
-    #         data=dict(email="wrong", password="wrong"),
-    #         follow_redirects=True
-    #     )
-    #     self.assertIn(b'Login', response.data)
-    # Ensure logout behaves correctly
+    # Ensure login behaves correctly with incorrect credentials
+    def test_incorrect_login(self):
+        tester = app.test_client()
+        response = tester.post(
+            '/',
+            data=dict(email="wrong", password="wrong"),
+            follow_redirects=True
+        )
+        self.assertIn(b'Login', response.data)
+    Ensure logout behaves correctly
+    
     def test_logout(self):
         tester = app.test_client()
         tester.post(

@@ -18,8 +18,8 @@ pipeline {
             
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
-                   
-                    sh 'python -m pytest'          //lior change
+                    sh 'source vemv/bin/activate && pytest' 
+                    //sh 'python -m pytest'          //lior change
                     // sh 'python -m py_compile website/test.py'
                     
                 }

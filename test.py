@@ -17,15 +17,16 @@ class LoginTestCase(unittest.TestCase):
         response = tester.get('/')
         self.assertIn(b'Login', response.data)
 
-    # Ensure login behaves correctly with correct credentials
-    # def test_correct_login(self):
-    #     tester = app.test_client()
-    #     response = tester.post(
-    #         '/',
-    #         data=dict(email="kid@gmail.com", password="1234567"),
-    #         follow_redirects=True
-    #     )
-    #     self.assertIn(b'kidPage', response.data)
+    #Ensure login behaves correctly with correct credentials
+    def test_correct_login(self):
+        tester = app.test_client()
+        response = tester.post(
+            '/',
+            data=dict(email="kid@gmail.com", password="1234567"),
+            follow_redirects=True
+        )
+        self.assertIn(b'kidPage', response.data)
+        
 
     # # Ensure login behaves correctly with incorrect credentials
     # def test_incorrect_login(self):

@@ -1,8 +1,7 @@
 
 from main import app
-from . import auth
+from website import auth
 import unittest
-import pytest
 import requests
 
 

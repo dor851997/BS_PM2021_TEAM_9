@@ -22,7 +22,7 @@ pipeline {
                     //sh 'source vemv/bin/activate && pytest' //matan
                     //sh 'python -m pytest'          //lior change
                     //sh 'python -m py_compile website/test.py'
-                    sh 'python -m unittest website/test.py'
+                    sh 'python -m unittest test.py'
                 }
             }
 

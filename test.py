@@ -55,13 +55,57 @@ class LoginTestCase(unittest.TestCase):
         )
         self.assertIn(b'Login', response.data)
     #Ensure logout behaves correctly
-    def test_quizzes(self):
-        tester = app.test_client()
+
+class KidTestCase(unittest.TestCase):
+    def Post_Response_Kid_Page(self):
+        tester = app.test_client(self)
         response=tester.post(
             '/',
             data=dict(email="kid@gmail.com", password="1234567"),
             follow_redirects=True
         )
+        return response
+    def Post_Response_Quiz_Page(self,category):
+        tester = app.test_client(self)
+        tester.post(
+            '/',
+            data=dict(email="kid@gmail.com", password="1234567"),
+            follow_redirects=True
+        )
+        response=tester.post(
+            '/kidPage',
+            data=dict(cat=category),
+            follow_redirects=True
+        )
+        return response
+
+    def Post_Tester_Quiz_Page(self,category):
+        tester = app.test_client(self)
+        tester.post(
+            '/',
+            data=dict(email="kid@gmail.com", password="1234567"),
+            follow_redirects=True
+        )
+        tester.post(
+            '/kidPage',
+            data=dict(cat=category),
+            follow_redirects=True
+        )
+        return tester
+  
+    #Ensure that flask was set up corrently
+    def test_Kid_Page_response(self):
+        tester = app.test_client(self)
+        tester.post(
+            '/',
+            data=dict(email="kid@gmail.com", password="1234567"),
+            follow_redirects=True
+        )
+        response=tester.get('/kidPage')
+        self.assertEqual(response.status_code, 200)
+        
+    def test_quizzes(self):
+        response=self.Post_Response_Kid_Page()
         self.assertIn(b'Animal', response.data)
         self.assertIn(b'Nature', response.data)
         self.assertIn(b'Math', response.data)
@@ -69,77 +113,64 @@ class LoginTestCase(unittest.TestCase):
         self.assertIn(b'Color', response.data)
         
     def test_Animal_Category(self):
-        tester = app.test_client()
-        response=tester.post(
-            '/',
-            data=dict(email="kid@gmail.com", password="1234567"),
-            follow_redirects=True
-        )
-        response=tester.post(
-            '/kidPage',
-            data=dict(cat="Animal"),
-            follow_redirects=True
-        )
+        response=self.Post_Response_Quiz_Page("Animal")
         self.assertIn(b'Animal Questions', response.data)
        
     def test_Nature_Category(self):
-        tester = app.test_client()
-        response=tester.post(
-            '/',
-            data=dict(email="kid@gmail.com", password="1234567"),
-            follow_redirects=True
-        )
-        response=tester.post(
-            '/kidPage',
-            data=dict(cat="Nature"),
-            follow_redirects=True
-        )
+        response=self.Post_Response_Quiz_Page("Nature")
         self.assertIn(b'Nature Questions', response.data)
     
     def test_Math_Category(self):
-        tester = app.test_client()
-        response=tester.post(
-            '/',
-            data=dict(email="kid@gmail.com", password="1234567"),
-            follow_redirects=True
-        )
-        response=tester.post(
-            '/kidPage',
-            data=dict(cat="Math"),
-            follow_redirects=True
-        )
+        response=self.Post_Response_Quiz_Page("Math")
         self.assertIn(b'Math Questions', response.data)
     
     def test_History_Category(self):
-        tester = app.test_client()
-        response=tester.post(
-            '/',
-            data=dict(email="kid@gmail.com", password="1234567"),
-            follow_redirects=True
-        )
-        response=tester.post(
-            '/kidPage',
-            data=dict(cat="History"),
-            follow_redirects=True
-        )
+        response=self.Post_Response_Quiz_Page("History")
         self.assertIn(b'History Questions', response.data) 
 
     def test_Color_Category(self):
-        tester = app.test_client()
-        response=tester.post(
-            '/',
-            data=dict(email="kid@gmail.com", password="1234567"),
-            follow_redirects=True
-        )
-        response=tester.post(
-            '/kidPage',
-            data=dict(cat="Color"),
-            follow_redirects=True
-        )
+        response=self.Post_Response_Quiz_Page("Color")
         self.assertIn(b'Color Questions', response.data) 
+    def test_Finish_Quiz(self):
+        tester=self.Post_Tester_Quiz_Page("Animal")
+        response=tester.post(
+            '/question',
+            data=dict(finish1="1"),
+            follow_redirects=True
+        )
+        self.assertIn(b'kidPage', response.data) 
 
-
-    def test_logout(self):
+    # def test_Quiz_Answer_Correct(self):
+    #     tester=self.Post_Tester_Quiz_Page("Animal")
+    #     response=tester.post(
+    #         '/question',
+    #         data=dict(q_answer="4 Four"),
+    #         follow_redirects=True
+    #     )
+    #     self.assertIn(b'question', response.data) 
+    def test_Quiz_Answer_Wrong(self):
+        tester=self.Post_Tester_Quiz_Page("Animal")
+        response=tester.post(
+            '/question',
+            data=dict(q_answer=""),
+            follow_redirects=True
+        )
+        self.assertIn(b'info', response.data)
+    def test_InfoPage_BackToKidPage(self):
+        tester=self.Post_Tester_Quiz_Page("Animal")
+        tester.post(
+            '/question',
+            data=dict(q_answer=""),
+            follow_redirects=True
+        )
+        response=tester.post(
+            '/info',
+            data=dict(kidPage=""),
+            follow_redirects=True
+        )
+        self.assertIn(b'kidPage', response.data)
+            
+    def test_kid_logout(self):
         tester = app.test_client()
         tester.post(
             '/',
@@ -148,14 +179,51 @@ class LoginTestCase(unittest.TestCase):
         )
         response = tester.get('/logout', follow_redirects=True)
         self.assertIn(b'Login', response.data)
+    
+    
+class AdminTestCase(unittest.TestCase):
+    def test_Editor_Page_response(self):
+        tester = app.test_client(self)
+        tester.post(
+            '/',
+            data=dict(email="admin@gmail.com", password="1234567"),
+            follow_redirects=True
+        )
+        response=tester.get('/adminPage')
+        self.assertEqual(response.status_code, 200)
+
+    def test_admin_logout(self):
+        tester = app.test_client()
+        tester.post(
+            '/',
+            data=dict(email="admin@gmail.com", password="1234567"),
+            follow_redirects=True
+        )
+        response = tester.get('/logout', follow_redirects=True)
+        self.assertIn(b'Login', response.data)
 
 
-# class KidTestCase(unittest.TestCase):
-#     #Ensure that flask was set up corrently
-#     URL="http://127.0.0.1:5000/kidPage"
-#     def test_1_kid_page(self):
-#         r=requests.get(KidTestCase.URL)
-#         self.assertEqual(r.status_code,200)
+class EditorTestCase(unittest.TestCase):
+    #Ensure that flask was set up corrently
+    def test_Editor_Page_response(self):
+        tester = app.test_client(self)
+        tester.post(
+            '/',
+            data=dict(email="editor@gmail.com", password="1234567"),
+            follow_redirects=True
+        )
+        response=tester.get('/editorPage')
+        self.assertEqual(response.status_code, 200)
+
+    def test_editor_logout(self):
+        tester = app.test_client()
+        tester.post(
+            '/',
+            data=dict(email="editor@gmail.com", password="1234567"),
+            follow_redirects=True
+        )
+        response = tester.get('/logout', follow_redirects=True)
+        self.assertIn(b'Login', response.data)
     
 
 if __name__ == '__name__':

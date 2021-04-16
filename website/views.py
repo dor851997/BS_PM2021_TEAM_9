@@ -55,10 +55,25 @@ def kidPage():
         flash("No Permission to current user to enter admin page.", category='error')
         return render_template("adminPage.html", user=current_user)
     
-
 @views.route('/adminPage', methods=['GET', 'POST'])
 @login_required
 def adminPage():
+    if current_user.auth=="admin":
+        if request.method == 'POST':
+            return render_template("adminPage.html", user= current_user)
+
+        return render_template("adminPage.html", user= current_user)
+
+    elif current_user.auth=="kid":
+        flash("No Permission to current user to enter admin page.", category='error')
+        return render_template("kidPage.html", user=current_user)
+    else:
+        flash("No Permission to current user to enter admin page.", category='error')
+        return render_template("editorPage.html", user=current_user)
+
+@views.route('/userManagment', methods=['GET', 'POST'])
+@login_required
+def userManagment():
     if current_user.auth=="admin":
         if request.method == 'POST':
             if request.form.get("addphide")=="1":
@@ -68,8 +83,6 @@ def adminPage():
                 user.email=request.form.get("email")
                 user.password=generate_password_hash( request.form.get("password"), method='sha256')
                 user.auth=request.form.get("auth")
-                # new_user = User(email=email, first_name=first_name, password=generate_password_hash(
-                #         password1, method='sha256'),auth=auth)
                 db.session.add(user)
                 db.session.commit()
                     
@@ -79,9 +92,9 @@ def adminPage():
                 db.session.delete(user)
                 db.session.commit()
             users=User.query.all()
-            return render_template("adminPage.html", user= current_user,alluser=users)
+            return render_template("userManagment.html", user= current_user,alluser=users)
         users = User.query.all()
-        return render_template("adminPage.html", user= current_user ,alluser=users)
+        return render_template("userManagment.html", user= current_user ,alluser=users)
     elif current_user.auth=="kid":
         flash("No Permission to current user to enter admin page.", category='error')
         return render_template("kidPage.html", user=current_user)

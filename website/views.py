@@ -2,58 +2,13 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for,session
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from random import randrange
+import random
 from . import db
 import json
 from .models import User, Question,QuestionCategory
 
 views = Blueprint('views', __name__)
 
-@views.route('/kidPage', methods=['GET', 'POST'])
-@login_required
-def kidPage():
-    if current_user.auth=="kid":
-        if request.method == 'POST':
-            list=[]
-            cat=request.form["cat"]
-            if cat == "Animal":
-                questions = Question.query.filter_by(cat = "Animal").all()
-                for q in questions:
-                    list.append(json.dumps(q,default=encoder_question))   
-                session["questions"]=list
-                return redirect(url_for('views.question'))
-            elif cat== "Nature":
-                questions = Question.query.filter_by(cat = "Nature").all()
-                for q in questions:
-                    list.append(json.dumps(q,default=encoder_question))   
-                session["questions"]=list
-                return redirect(url_for('views.question'))
-            elif cat == "Math":
-                questions = Question.query.filter_by(cat = "Math").all()
-                for q in questions:
-                    list.append(json.dumps(q,default=encoder_question))   
-                session["questions"]=list
-                return redirect(url_for('views.question'))
-            elif cat == "History":
-                questions = Question.query.filter_by(cat = "History").all()
-                for q in questions:
-                    list.append(json.dumps(q,default=encoder_question))   
-                session["questions"]=list
-                return redirect(url_for('views.question'))
-            elif request.form["cat"] == "Color":
-                questions = Question.query.filter_by(cat = "Color").all()
-                for q in questions:
-                    list.append(json.dumps(q,default=encoder_question))   
-                session["questions"]=list
-                return redirect(url_for('views.question'))
-        cats = QuestionCategory.query.all()
-        return render_template("kidPage.html", user=current_user, cats = cats)
-    elif current_user.auth=="editor":
-        flash("No Permission to current user to enter kid page.", category='error')
-        return render_template("editorPage.html", user=current_user)
-    else:
-        flash("No Permission to current user to enter admin page.", category='error')
-        return render_template("adminPage.html", user=current_user)
     
 @views.route('/adminPage', methods=['GET', 'POST'])
 @login_required
@@ -113,8 +68,63 @@ def editorPage():
     else:
         flash("No Permission to current user to enter editor page.", category='error')
         return render_template("adminPage.html", user=current_user)
-   
 
+
+@views.route('/kidPage', methods=['GET', 'POST'])
+@login_required
+def kidPage():
+    if current_user.auth=="kid":
+        if request.method == 'POST':
+            list_dump=[]
+            cat=request.form["cat"]
+            if cat == "Animal":
+                questions = Question.query.filter_by(cat = "Animal").all()
+            elif cat== "Nature":
+                questions = Question.query.filter_by(cat = "Nature").all()
+            elif cat == "Math":
+                questions = Question.query.filter_by(cat = "Math").all()  
+            elif cat == "History":
+                questions = Question.query.filter_by(cat = "History").all() 
+            elif request.form["cat"] == "Color":
+                questions = Question.query.filter_by(cat = "Color").all()
+            questions=RandomQuestions(questions)
+            for q in questions:
+                list_dump.append(json.dumps(q,default=encoder_question))   
+            session["questions"]=list_dump
+            return redirect(url_for('views.question'))  
+        cats = QuestionCategory.query.all()
+        return render_template("kidPage.html", user=current_user, cats = cats)
+    elif current_user.auth=="editor":
+        flash("No Permission to current user to enter kid page.", category='error')
+        return render_template("editorPage.html", user=current_user)
+    else:
+        flash("No Permission to current user to enter admin page.", category='error')
+        return render_template("adminPage.html", user=current_user)
+
+def RandomQuestions(questions):
+    for _ in range((len(questions)-1)//2):
+        num_index=random.randint(1,len(questions)-1)
+        temp=questions[0]
+        questions[0]=questions[num_index]
+        questions[num_index]=temp
+        
+    for j in range(len(questions)):
+        for _ in range(2):
+            num_answer=random.randint(1,3)
+            if(num_answer==1):
+                tempo=questions[j].answer4
+                questions[j].answer4=questions[j].answer1
+                questions[j].answer1=tempo
+            elif(num_answer==2):
+                tempo=questions[j].answer4
+                questions[j].answer4=questions[j].answer2
+                questions[j].answer2=tempo
+            else:
+                tempo=questions[j].answer4
+                questions[j].answer4=questions[j].answer3
+                questions[j].answer3=tempo    
+    
+    return questions
 
 @views.route('/question',methods=['GET', 'POST'])
 @login_required
@@ -153,9 +163,10 @@ def encoder_question(question):
         return {'cat':question.cat,
         'question':question.question,
         'correct':question.correct,
-        'wrong1':question.wrong1,
-        'wrong2':question.wrong2,
-        'wrong3':question.wrong3,
+        'answer1':question.answer1,
+        'answer2':question.answer2,
+        'answer3':question.answer3,
+        'answer4':question.answer4,
         'url':question.url
         }
     raise TypeError(f'Object {question} is not type of Person.')  
@@ -176,3 +187,6 @@ def finishQuestions():
         return redirect(url_for('views.kidPage'))
     if current_user.auth=="kid":
         return render_template("finishQuestions.html", user = current_user)
+
+
+

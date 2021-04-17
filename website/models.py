@@ -18,9 +18,10 @@ class Question(db.Model):
     cat = db.Column(db.String(150))
     question = db.Column(db.String(150))   
     correct = db.Column(db.String(150))
-    wrong1 = db.Column(db.String(150))
-    wrong2 = db.Column(db.String(150))
-    wrong3 = db.Column(db.String(150))
+    answer1 = db.Column(db.String(150))
+    answer2 = db.Column(db.String(150))
+    answer3 = db.Column(db.String(150))
+    answer4 = db.Column(db.String(150))
     url = db.Column(db.String(1500))
 
 class QuestionCategory(db.Model):

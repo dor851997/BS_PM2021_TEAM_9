@@ -140,14 +140,6 @@ class KidTestCase(unittest.TestCase):
         )
         self.assertIn(b'kidPage', response.data) 
 
-    # def test_Quiz_Answer_Correct(self):
-    #     tester=self.Post_Tester_Quiz_Page("Animal")
-    #     response=tester.post(
-    #         '/question',
-    #         data=dict(q_answer="4 Four"),
-    #         follow_redirects=True
-    #     )
-    #     self.assertIn(b'question', response.data) 
     def test_Quiz_Answer_Wrong(self):
         tester=self.Post_Tester_Quiz_Page("Animal")
         response=tester.post(

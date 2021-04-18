@@ -192,6 +192,12 @@ def finishQuestions():
 def contentManagement():
     return render_template("contentManagement.html", user=current_user)
 
+@views.route('/mailBox')
+def mailBox():
+    return render_template("mailBox.html", user=current_user)
+
+
+
 
 
 

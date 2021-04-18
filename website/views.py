@@ -196,6 +196,10 @@ def contentManagement():
 def mailBox():
     return render_template("mailBox.html", user=current_user)
 
+@views.route('/mailBoxEditor')
+def mailBoxEditor():
+    return render_template("mailBoxEditor.html", user=current_user)
+
 
 
 

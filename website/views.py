@@ -188,5 +188,10 @@ def finishQuestions():
     if current_user.auth=="kid":
         return render_template("finishQuestions.html", user = current_user)
 
+@views.route('/contentManagement')
+def contentManagement():
+    return render_template("contentManagement.html", user=current_user)
+
+
 
 

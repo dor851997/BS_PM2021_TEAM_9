@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import random
 from . import db
 import json
-from .models import User, Question,QuestionCategory
+from .models import User, Question, QuestionCategory, MailBox 
 
 views = Blueprint('views', __name__)
 
@@ -194,7 +194,8 @@ def contentManagement():
 
 @views.route('/mailBox')
 def mailBox():
-    return render_template("mailBox.html", user=current_user)
+    mail = MailBox.query.filter_by(to = str(current_user.first_name))
+    return render_template("mailBox.html", user=current_user, mails=mail)
 
 @views.route('/mailBoxEditor')
 def mailBoxEditor():

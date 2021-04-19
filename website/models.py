@@ -35,3 +35,9 @@ class BestScore(db.Model):
     score= db.Column(db.Integer)
     cat = db.Column(db.String(150))
     
+class MailBox(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    From = db.Column(db.String(150))
+    to = db.Column(db.String(150))
+    message = db.Column(db.String(1000))
+    subject = db.Column(db.String(150))

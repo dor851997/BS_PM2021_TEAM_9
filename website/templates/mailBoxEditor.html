@@ -1,8 +1,9 @@
 {% extends "base.html" %} {% block title %}adminPage{% endblock %} {% block content
-    %}
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
+%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>inbox</title>
@@ -16,10 +17,11 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <title>Mail Box</title>
     <style>
-                body{
-            margin-top:20px;
-            background:#eee;
+        body {
+            margin-top: 20px;
+            background: #eee;
         }
+
         /* EMAIL */
         .email {
             padding: 20px 10px 15px 10px;
@@ -35,43 +37,43 @@
             padding-bottom: 8px;
         }
 
-        .email .nav.nav-pills > li > a {
+        .email .nav.nav-pills>li>a {
             border-top: 3px solid transparent;
         }
 
-        .email .nav.nav-pills > li > a > .fa {
+        .email .nav.nav-pills>li>a>.fa {
             margin-right: 5px;
         }
 
-        .email .nav.nav-pills > li.active > a,
-        .email .nav.nav-pills > li.active > a:hover {
+        .email .nav.nav-pills>li.active>a,
+        .email .nav.nav-pills>li.active>a:hover {
             background-color: #f6f6f6;
             border-top-color: #3c8dbc;
         }
 
-        .email .nav.nav-pills > li.active > a {
+        .email .nav.nav-pills>li.active>a {
             font-weight: 600;
         }
 
-        .email .nav.nav-pills > li > a:hover {
+        .email .nav.nav-pills>li>a:hover {
             background-color: #f6f6f6;
         }
 
-        .email .nav.nav-pills.nav-stacked > li > a {
+        .email .nav.nav-pills.nav-stacked>li>a {
             color: #666;
             border-top: 0;
             border-left: 3px solid transparent;
             border-radius: 0px;
         }
 
-        .email .nav.nav-pills.nav-stacked > li.active > a,
-        .email .nav.nav-pills.nav-stacked > li.active > a:hover {
+        .email .nav.nav-pills.nav-stacked>li.active>a,
+        .email .nav.nav-pills.nav-stacked>li.active>a:hover {
             background-color: #f6f6f6;
             border-left-color: #3c8dbc;
             color: #444;
         }
 
-        .email .nav.nav-pills.nav-stacked > li.header {
+        .email .nav.nav-pills.nav-stacked>li.header {
             color: #777;
             text-transform: uppercase;
             position: relative;
@@ -86,29 +88,29 @@
             color: #666;
         }
 
-        .email table tr.read > td {
+        .email table tr.read>td {
             background-color: #f6f6f6;
         }
 
-        .email table tr.read > td {
+        .email table tr.read>td {
             font-weight: 400;
         }
 
-        .email table tr td > i.fa {
+        .email table tr td>i.fa {
             font-size: 1.2em;
             line-height: 1.5em;
             text-align: center;
         }
 
-        .email table tr td > i.fa-star {
+        .email table tr td>i.fa-star {
             color: #f39c12;
         }
 
-        .email table tr td > i.fa-bookmark {
+        .email table tr td>i.fa-bookmark {
             color: #e74c3c;
         }
 
-        .email table tr > td.action {
+        .email table tr>td.action {
             padding-left: 0px;
             padding-right: 2px;
         }
@@ -130,7 +132,7 @@
         }
 
         .grid .grid-header span,
-        .grid .grid-header > .fa {
+        .grid .grid-header>.fa {
             display: inline-block;
             margin: 0;
             font-weight: 300;
@@ -142,21 +144,21 @@
             padding: 0 5px;
         }
 
-        .grid .grid-header > .fa {
+        .grid .grid-header>.fa {
             padding: 5px 10px 0 0;
         }
 
-        .grid .grid-header > .grid-tools {
+        .grid .grid-header>.grid-tools {
             padding: 4px 10px;
         }
 
-        .grid .grid-header > .grid-tools a {
+        .grid .grid-header>.grid-tools a {
             color: #999999;
             padding-left: 10px;
             cursor: pointer;
         }
 
-        .grid .grid-header > .grid-tools a:hover {
+        .grid .grid-header>.grid-tools a:hover {
             color: #666666;
         }
 
@@ -176,69 +178,70 @@
             border-radius: 0px !important;
         }
 
-        .grid.top.black > .grid-header {
+        .grid.top.black>.grid-header {
             border-top-color: #000000 !important;
         }
 
-        .grid.bottom.black > .grid-body {
+        .grid.bottom.black>.grid-body {
             border-bottom-color: #000000 !important;
         }
 
-        .grid.top.blue > .grid-header {
+        .grid.top.blue>.grid-header {
             border-top-color: #007be9 !important;
         }
 
-        .grid.bottom.blue > .grid-body {
+        .grid.bottom.blue>.grid-body {
             border-bottom-color: #007be9 !important;
         }
 
-        .grid.top.green > .grid-header {
+        .grid.top.green>.grid-header {
             border-top-color: #00c273 !important;
         }
 
-        .grid.bottom.green > .grid-body {
+        .grid.bottom.green>.grid-body {
             border-bottom-color: #00c273 !important;
         }
 
-        .grid.top.purple > .grid-header {
+        .grid.top.purple>.grid-header {
             border-top-color: #a700d3 !important;
         }
 
-        .grid.bottom.purple > .grid-body {
+        .grid.bottom.purple>.grid-body {
             border-bottom-color: #a700d3 !important;
         }
 
-        .grid.top.red > .grid-header {
+        .grid.top.red>.grid-header {
             border-top-color: #dc1200 !important;
         }
 
-        .grid.bottom.red > .grid-body {
+        .grid.bottom.red>.grid-body {
             border-bottom-color: #dc1200 !important;
         }
 
-        .grid.top.orange > .grid-header {
+        .grid.top.orange>.grid-header {
             border-top-color: #f46100 !important;
         }
 
-        .grid.bottom.orange > .grid-body {
+        .grid.bottom.orange>.grid-body {
             border-bottom-color: #f46100 !important;
         }
 
-        .grid.no-border > .grid-header {
+        .grid.no-border>.grid-header {
             border-bottom: 0px !important;
         }
 
-        .grid.top > .grid-header {
+        .grid.top>.grid-header {
             border-top-width: 4px !important;
             border-top-style: solid !important;
         }
 
-        .grid.bottom > .grid-body {
+        .grid.bottom>.grid-body {
             border-bottom-width: 4px !important;
             border-bottom-style: solid !important;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="row">
@@ -250,16 +253,43 @@
                             <!-- BEGIN INBOX MENU -->
                             <div class="col-md-3">
                                 <h2 class="grid-title"><i class="fa fa-inbox"></i> Inbox</h2>
-                                <a class="btn btn-block btn-primary" data-toggle="modal" data-target="#compose-modal"><i class="fa fa-pencil" style="color:white;"></i>&nbsp;&nbsp;<i style="color: white;">NEW MESSAGE</i></a>
-    
+                                <a class="btn btn-block btn-primary" data-toggle="modal" data-target="#compose-modal"><i
+                                        class="fa fa-pencil" style="color:white;"></i>&nbsp;&nbsp;<i
+                                        style="color: white;">NEW MESSAGE</i></a>
+
                                 <hr>
-                                    <div class="col-md-6 search-form">
-                                    </div>
+                                <div class="col-md-6 search-form">
                                 </div>
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <tbody>
-                                            <tr>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+
+                                        <tr>
+                                            <th>
+                                                From
+                                            </th>
+                                            <th>
+                                                Subject
+                                            </th>
+                                            <th>
+                                                Message
+                                            </th>
+                                        </tr>
+                                        {%for mail in mails%}
+                                        <tr>
+                                            <td class="name">
+                                                {{mail.From}}
+                                            </td>
+                                            <td class="subject">
+                                                {{mail.subject}}
+                                            </td>
+                                            <td class="message">
+                                                {{mail.message}}
+                                            </td>
+                                        </tr>
+                                        {%endfor%}
+                                        <!-- <tr>
                                                 <td class="action">></td>
                                                 <td class="action"></td>
                                                 <td class="action"></td>
@@ -286,38 +316,45 @@
                                                 <td class="action"></td>
                                                 <td class="name"><a href="#">shaul levi</a></td>
                                                 <td class="subject"><a href="#">Shaul get dolor , consectetur adipisicing elit, sed. </a></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                            </tr> -->
+                                    </tbody>
+                                </table>
                             </div>
-                            <!-- END INBOX CONTENT -->
-                            <!-- BEGIN COMPOSE MESSAGE -->
-                        <div class="modal fade" id="compose-modal" tabindex="-1" role="dialog" aria-hidden="true" dir="rtl">
+                        </div>
+                        <!-- END INBOX CONTENT -->
+                        <!-- BEGIN COMPOSE MESSAGE -->
+                        <div class="modal fade" id="compose-modal" tabindex="-1" role="dialog" aria-hidden="true"
+                            dir="rtl">
                             <div class="modal-wrapper">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header bg-blue">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                            <h4 class="modal-title" dir="ltr"><i class="fa fa-envelope" dir="rtl"></i> Compose New Message</h4>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-hidden="true">×</button>
+                                            <h4 class="modal-title" dir="ltr"><i class="fa fa-envelope" dir="rtl"></i>
+                                                Compose New Message</h4>
                                         </div>
-                                        <form action="#" method="post" dir="ltr">
+                                        <form method="POST" dir="ltr">
                                             <div class="modal-body">
                                                 <div class="form-group">
                                                     <input name="to" type="email" class="form-control" placeholder="To">
                                                 </div>
                                                 <div class="form-group">
-                                                    <input name="subject" type="email" class="form-control" placeholder="Subject">
+                                                    <input name="subject" class="form-control"
+                                                        placeholder="Subject">
                                                 </div>
                                                 <div class="form-group">
-                                                    <textarea name="message" id="email_message" class="form-control" placeholder="Message" style="height: 120px;"></textarea>
+                                                    <textarea name="message" id="email_message" class="form-control"
+                                                        placeholder="Message" style="height: 120px;"></textarea>
                                                 </div>
                                                 <div class="form-group">
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Discard</button>
-                                                <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-envelope"></i> Send Message</button>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                                        class="fa fa-times"></i> Discard</button>
+                                                <button type="submit" class="btn btn-primary pull-right"><i
+                                                        class="fa fa-envelope"></i> Send Message</button>
                                             </div>
                                         </form>
                                     </div>
@@ -333,6 +370,7 @@
     </div>
     </div>
 </body>
+
 </html>
 
 

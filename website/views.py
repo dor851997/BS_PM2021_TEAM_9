@@ -192,9 +192,18 @@ def finishQuestions():
 def contentManagement():
     return render_template("contentManagement.html", user=current_user)
 
-@views.route('/mailBox')
+@views.route('/mailBox',methods=['GET', 'POST'])
 def mailBox():
-    mail = MailBox.query.filter_by(to = str(current_user.first_name))
+    mail = MailBox.query.filter_by(to = str(current_user.email))
+    if request.method == 'POST':
+        to = request.form.get('to')
+        From = current_user.email
+        subject = request.form.get('subject')
+        message = request.form.get('message')
+        new_mail = MailBox(From = From, to = to, message = message, subject = subject)
+        db.session.add(new_mail)
+        db.session.commit()
+        return render_template("mailBox.html", user=current_user, mails=mail)
     return render_template("mailBox.html", user=current_user, mails=mail)
 
 @views.route('/mailBoxEditor')

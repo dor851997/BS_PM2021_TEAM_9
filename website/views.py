@@ -191,7 +191,20 @@ def finishQuestions():
 @views.route('/contentManagement', methods=['GET', 'POST'])
 def contentManagement():
     if request.method == 'POST':
-        if request.form.get("deletephide")=="1":
+        if request.form.get("addphide")=="1":
+            print("add")
+            cat = request.form.get('category')
+            que = request.form.get('question')
+            correct_ans = request.form.get('correct_ans')
+            answer1 = request.form.get('answer1')
+            answer2 = request.form.get('answer2')
+            answer3 = request.form.get('answer3')
+            answer4 = request.form.get('answer4')
+            url = request.form.get('url')
+            question = Question(cat = cat, question = que, correct = correct_ans, answer1 = answer1, answer2 = answer2, answer3 = answer3, answer4 = answer4, url = url)
+            db.session.add(question)
+            db.session.commit()
+        elif request.form.get("deletephide")=="1":
             print("delete")
             question=Question.query.filter_by(id = int(request.form.get("id_question"))).first()
             db.session.delete(question)

@@ -190,6 +190,12 @@ def finishQuestions():
 
 @views.route('/contentManagement', methods=['GET', 'POST'])
 def contentManagement():
+    # if request.method == 'POST':
+    #     if request.form.get("deletephide")=="1":
+    #         print("delete")
+    #         question=Question.query.filter_by(id = int(request.form.get("id_question"))).first()
+    #         db.session.delete(question)
+    #         db.session.commit()
     questions = Question.query.all()
     return render_template("contentManagement.html", user=current_user, questions = questions)
 

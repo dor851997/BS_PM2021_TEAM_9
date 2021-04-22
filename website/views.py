@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import random
 from . import db
 import json
-from .models import User, Question, QuestionCategory, MailBox 
+from .models import User, Question, QuestionCategory, MailBox ,Background
 
 views = Blueprint('views', __name__)
 
@@ -13,26 +13,27 @@ views = Blueprint('views', __name__)
 @views.route('/adminPage', methods=['GET', 'POST'])
 @login_required
 def adminPage():
+    back=Background.query.all()
     if current_user.auth=="admin":
         if request.method == 'POST':
             return render_template("adminPage.html", user= current_user)
 
-        return render_template("adminPage.html", user= current_user)
+        return render_template("adminPage.html", user= current_user,background=back)
 
     elif current_user.auth=="kid":
         flash("No Permission to current user to enter admin page.", category='error')
-        return render_template("kidPage.html", user=current_user)
+        return render_template("kidPage.html", user=current_user,background=back)
     else:
         flash("No Permission to current user to enter admin page.", category='error')
-        return render_template("editorPage.html", user=current_user)
+        return render_template("editorPage.html", user=current_user,background=back)
 
 @views.route('/userManagment', methods=['GET', 'POST'])
 @login_required
 def userManagment():
+    back=Background.query.all()
     if current_user.auth=="admin":
         if request.method == 'POST':
             if request.form.get("addphide")=="1":
-                print("add")
                 user=User.query.filter_by(id = int(request.form.get("id_user"))).first()
                 user.first_name=request.form.get("first_name")
                 user.email=request.form.get("email")
@@ -40,39 +41,39 @@ def userManagment():
                 user.auth=request.form.get("auth")
                 db.session.add(user)
                 db.session.commit()
-                    
             elif request.form.get("deletephide")=="1":
-                print("delete")
                 user=User.query.filter_by(id = int(request.form.get("id_user"))).first()
                 db.session.delete(user)
                 db.session.commit()
             users=User.query.all()
-            return render_template("userManagment.html", user= current_user,alluser=users)
+            return render_template("userManagment.html", user= current_user,alluser=users,background=back)
         users = User.query.all()
-        return render_template("userManagment.html", user= current_user ,alluser=users)
+        return render_template("userManagment.html", user= current_user ,alluser=users,background=back)
     elif current_user.auth=="kid":
         flash("No Permission to current user to enter admin page.", category='error')
-        return render_template("kidPage.html", user=current_user)
+        return render_template("kidPage.html", user=current_user,background=back)
     else:
         flash("No Permission to current user to enter admin page.", category='error')
-        return render_template("editorPage.html", user=current_user)
+        return render_template("editorPage.html", user=current_user,background=back)
     
 @views.route('/editorPage')
 @login_required    
 def editorPage():
+    back=Background.query.all()
     if current_user.auth=="editor":
         return render_template("editorPage.html", user=current_user)
     elif current_user.auth=="kid":
         flash("No Permission to current user to enter editor page.", category='error')
-        return render_template("kidPage.html", user=current_user)
+        return render_template("kidPage.html", user=current_user,background=back)
     else:
         flash("No Permission to current user to enter editor page.", category='error')
-        return render_template("adminPage.html", user=current_user)
+        return render_template("adminPage.html", user=current_user,background=back)
 
 
 @views.route('/kidPage', methods=['GET', 'POST'])
 @login_required
 def kidPage():
+    back=Background.query.all()
     if current_user.auth=="kid":
         if request.method == 'POST':
             list_dump=[]
@@ -93,13 +94,13 @@ def kidPage():
             session["questions"]=list_dump
             return redirect(url_for('views.question'))  
         cats = QuestionCategory.query.all()
-        return render_template("kidPage.html", user=current_user, cats = cats)
+        return render_template("kidPage.html", user=current_user, cats = cats,background=back)
     elif current_user.auth=="editor":
         flash("No Permission to current user to enter kid page.", category='error')
-        return render_template("editorPage.html", user=current_user)
+        return render_template("editorPage.html", user=current_user,background=back)
     else:
         flash("No Permission to current user to enter admin page.", category='error')
-        return render_template("adminPage.html", user=current_user)
+        return render_template("adminPage.html", user=current_user,background=back)
 
 def RandomQuestions(questions):
     for _ in range((len(questions)-1)//2):
@@ -129,6 +130,7 @@ def RandomQuestions(questions):
 @views.route('/question',methods=['GET', 'POST'])
 @login_required
 def question():
+    back=Background.query.all()
     if request.method == 'POST':
         if request.form.get('finish1')=="1":        
             return redirect(url_for('views.kidPage'))
@@ -142,20 +144,20 @@ def question():
         session["questions"].pop(0)
         if len(session["questions"])!=0:
             question=json.loads(session["questions"][0])
-            return render_template("question.html",user=current_user,  question = question,score=session["score"])
+            return render_template("question.html",user=current_user,  question = question,score=session["score"],background=back)
         else:
             return redirect(url_for('views.finishQuestions'))
     if current_user.auth=="kid":
         session["score"]=current_user.score
         question=json.loads(session["questions"][0])
-        return render_template("question.html", user=current_user, question = question,score=session["score"])
+        return render_template("question.html", user=current_user, question = question,score=session["score"],background=back)
     
     elif current_user.auth=="editor":
         flash("No Permission to current user to enter kid page.", category='error')
-        return render_template("editorPage.html", user=current_user)
+        return render_template("editorPage.html", user=current_user,background=back)
     else:
         flash("No Permission to current user to enter admin page.", category='error')
-        return render_template("adminPage.html", user=current_user)
+        return render_template("adminPage.html", user=current_user,background=back)
 
 
 def encoder_question(question):
@@ -175,21 +177,24 @@ def encoder_question(question):
 @views.route('/info',methods=['GET', 'POST'])
 @login_required    
 def info():
+    back=Background.query.all()
     if request.method == 'POST':
         return redirect(url_for('views.kidPage'))
     if current_user.auth=="kid":
-        return render_template("info.html", user = current_user, question = json.loads(session["questions"][0]))
+        return render_template("info.html", user = current_user, question = json.loads(session["questions"][0]),background=back)
 
 @views.route('/finishQuestions',methods=['GET', 'POST'])
 @login_required    
 def finishQuestions():
+    back=Background.query.all()
     if request.method == 'POST':
         return redirect(url_for('views.kidPage'))
     if current_user.auth=="kid":
-        return render_template("finishQuestions.html", user = current_user)
+        return render_template("finishQuestions.html", user = current_user,background=back)
 
 @views.route('/contentManagement', methods=['GET', 'POST'])
 def contentManagement():
+    back=Background.query.all()
     if request.method == 'POST':
         if request.form.get("addphide")=="1":
             print("add")
@@ -210,10 +215,11 @@ def contentManagement():
             db.session.delete(question)
             db.session.commit()
     questions = Question.query.all()
-    return render_template("contentManagement.html", user=current_user, questions = questions)
+    return render_template("contentManagement.html", user=current_user, questions = questions,background=back)
 
 @views.route('/mailBox',methods=['GET', 'POST'])
 def mailBox():
+    back=Background.query.all()
     mail = MailBox.query.filter_by(to = str(current_user.email))
     if request.method == 'POST':
         to = request.form.get('to')
@@ -223,11 +229,12 @@ def mailBox():
         new_mail = MailBox(From = From, to = to, message = message, subject = subject)
         db.session.add(new_mail)
         db.session.commit()
-        return render_template("mailBox.html", user=current_user, mails=mail)
-    return render_template("mailBox.html", user=current_user, mails=mail)
+        return render_template("mailBox.html", user=current_user, mails=mail,background=back)
+    return render_template("mailBox.html", user=current_user, mails=mail,background=back)
 
 @views.route('/mailBoxEditor', methods=['GET', 'POST'])
 def mailBoxEditor():
+    back=Background.query.all()
     mail = MailBox.query.filter_by(to = str(current_user.email))
     if request.method == 'POST':
         to = request.form.get('to')
@@ -237,11 +244,29 @@ def mailBoxEditor():
         new_mail = MailBox(From = From, to = to, message = message, subject = subject)
         db.session.add(new_mail)
         db.session.commit()
-        return render_template("mailBoxEditor.html", user=current_user, mails=mail)
-    return render_template("mailBoxEditor.html", user=current_user, mails=mail)
+        return render_template("mailBoxEditor.html", user=current_user, mails=mail,background=back)
+    return render_template("mailBoxEditor.html", user=current_user, mails=mail,background=back)
 
-
-
+@views.route('/selectBackgrounds', methods=['GET', 'POST'])
+def selectBackgrounds():
+    back=Background.query.all()
+    if current_user.auth=="admin":
+        if request.method == 'POST':
+            print(request.form.getlist("check"))
+            for b in back:
+                if b.name in request.form.getlist("check"):
+                    b.checked="true"
+                else:
+                    b.checked="false"
+            db.session.commit()
+            back=Background.query.all()
+        return render_template("selectBackgrounds.html", user=current_user ,background=back)
+    elif current_user.auth=="kid":
+        flash("No Permission to current user to enter admin page.", category='error')
+        return render_template("kidPage.html", user=current_user,background=back)
+    else:
+        flash("No Permission to current user to enter admin page.", category='error')
+        return render_template("editorPage.html", user=current_user,background=back)
 
 
 

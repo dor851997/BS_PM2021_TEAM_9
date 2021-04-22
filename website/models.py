@@ -13,6 +13,13 @@ class User(db.Model, UserMixin):
     auth = db.Column(db.String(50))
     score = db.Column(db.Integer)
     
+
+class Background(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    picture = db.Column(db.String(150))
+    name = db.Column(db.String(150))
+    checked= db.Column(db.String(150))
+
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cat = db.Column(db.String(150))
@@ -41,3 +48,5 @@ class MailBox(db.Model):
     to = db.Column(db.String(150))
     message = db.Column(db.String(1000))
     subject = db.Column(db.String(150))
+
+

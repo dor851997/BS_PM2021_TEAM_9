@@ -174,23 +174,101 @@ class KidTestCase(unittest.TestCase):
     
     
 class AdminTestCase(unittest.TestCase):
-    def test_Editor_Page_response(self):
+    def Post_Response_Admin_Page(self):
+        tester = app.test_client(self)
+        response=tester.post(
+            '/',
+            data=dict(email="admin@gmail.com", password="1234567"),
+            follow_redirects=True
+        )
+        return response
+    def Post_tester_Admin_Page(self):
         tester = app.test_client(self)
         tester.post(
             '/',
             data=dict(email="admin@gmail.com", password="1234567"),
             follow_redirects=True
         )
-        response=tester.get('/adminPage')
-        self.assertEqual(response.status_code, 200)
+        return tester
 
-    def test_admin_logout(self):
-        tester = app.test_client()
-        tester.post(
-            '/',
-            data=dict(email="admin@gmail.com", password="1234567"),
+    def test_Admin_Page_response(self):
+        response=self.Post_Response_Admin_Page()
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'adminPage', response.data)
+
+
+    def test_Admin_User_Managment_response(self):
+        tester=self.Post_tester_Admin_Page()
+        response=tester.get('/userManagment', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'userManagment', response.data)
+
+    def test_Admin_User_Managment_Edit(self):
+        tester=self.Post_tester_Admin_Page()
+        tester.get('/userManagment', follow_redirects=True)
+        response=tester.post(
+            '/userManagment',
+            data=dict(addphide="1",id_user="3",first_name="kid",email="kid@gmail.com",password="1234567",auth="kid"),
             follow_redirects=True
         )
+        self.assertIn(b'userManagment', response.data) 
+    
+    def test_Admin_User_Managment_Remove(self):
+        tester=self.Post_tester_Admin_Page()
+        tester.get('/userManagment', follow_redirects=True)
+        response=tester.post(
+            '/userManagment',
+            data=dict(deletephide="1",id_user="4"),
+            follow_redirects=True
+        )
+        self.assertIn(b'userManagment', response.data) 
+
+    def test_Admin_Sign_Up_add_new(self):
+        tester=self.Post_tester_Admin_Page()
+        tester.get('/sign-up', follow_redirects=True)
+        response=tester.post(
+            '/sign-up',
+            data=dict(email="kid2@gmail.com",firstName="kid2",password1="1234567",password2="1234567",authorization="kid"),
+            follow_redirects=True
+        )
+        self.assertIn(b'Sign Up', response.data)
+
+    def test_Admin_Sign_Up_add_existing_user(self):
+        tester=self.Post_tester_Admin_Page()
+        tester.get('/sign-up', follow_redirects=True)
+        response=tester.post(
+            '/sign-up',
+            data=dict(email="kid@gmail.com",firstName="kid",password1="1234567",password2="1234567",authorization="kid"),
+            follow_redirects=True
+        )
+        self.assertIn(b'Sign Up', response.data)
+
+    def test_Admin_Content_Management_response(self):
+        tester=self.Post_tester_Admin_Page()
+        response=tester.get('/contentManagement', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'contentManagement', response.data)
+    
+    def test_Admin_MailBox_response(self):
+        tester=self.Post_tester_Admin_Page()
+        response=tester.get('/mailBox', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'mailBox', response.data)
+
+    def test_Admin_selectBackgrounds_response(self):
+        tester=self.Post_tester_Admin_Page()
+        response=tester.get('/selectBackgrounds', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'selectBackgrounds', response.data)
+
+    def test_Admin_Sign_Up_response(self):
+        tester=self.Post_tester_Admin_Page()
+        response=tester.get('/sign-up', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Sign Up', response.data)
+
+    def test_Admin_logout(self):
+        tester=self.Post_tester_Admin_Page()
         response = tester.get('/logout', follow_redirects=True)
         self.assertIn(b'Login', response.data)
 

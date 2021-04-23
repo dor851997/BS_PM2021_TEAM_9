@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import User
+from .models import User,Background
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
-
+from datetime import timedelta
 
 auth = Blueprint('auth', __name__)
 
@@ -43,8 +43,9 @@ def logout():
 
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
+@login_required
 def sign_up():
-    
+    back=Background.query.all()
     if request.method == 'POST':
         email = request.form.get('email')
         first_name = request.form.get('firstName')
@@ -66,18 +67,14 @@ def sign_up():
         else:
             new_user = User(email=email, first_name=first_name, password=generate_password_hash(
                 password1, method='sha256'),auth=auth)
+            if(new_user.auth=="kid"):
+                new_user.score=0
             db.session.add(new_user)
             db.session.commit()
-            login_user(new_user, remember=True)
+            # login_user(new_user, remember=True)
             flash('Account created!', category='success')
-            if new_user.auth=="kid":
-                return redirect(url_for('views.kidPage'))
-            elif new_user.auth=="editor":
-                return redirect(url_for('views.editorPage'))
-            else:
-                return redirect(url_for('views.adminPage'))
-
-    return render_template("sign_up.html", user=current_user)
+            render_template("sign_up.html", user=current_user,background=back)
+    return render_template("sign_up.html", user=current_user,background=back)
 
 
 

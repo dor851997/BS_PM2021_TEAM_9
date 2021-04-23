@@ -33,7 +33,7 @@ def userManagment():
     back=Background.query.all()
     if current_user.auth=="admin":
         if request.method == 'POST':
-            if request.form.get("addphide")=="1":
+            if request.form.get("addphide")=="1":##edit a user
                 user=User.query.filter_by(id = int(request.form.get("id_user"))).first()
                 user.first_name=request.form.get("first_name")
                 user.email=request.form.get("email")
@@ -41,7 +41,7 @@ def userManagment():
                 user.auth=request.form.get("auth")
                 db.session.add(user)
                 db.session.commit()
-            elif request.form.get("deletephide")=="1":
+            elif request.form.get("deletephide")=="1":##delete a user
                 user=User.query.filter_by(id = int(request.form.get("id_user"))).first()
                 db.session.delete(user)
                 db.session.commit()

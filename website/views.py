@@ -195,9 +195,9 @@ def finishQuestions():
 @views.route('/contentManagement', methods=['GET', 'POST'])
 def contentManagement():
     back=Background.query.all()
+   
     if request.method == 'POST':
         if request.form.get("addphide")=="1":
-            print("add")
             cat = request.form.get('category')
             que = request.form.get('question')
             correct_ans = request.form.get('correct_ans')
@@ -209,9 +209,21 @@ def contentManagement():
             question = Question(cat = cat, question = que, correct = correct_ans, answer1 = answer1, answer2 = answer2, answer3 = answer3, answer4 = answer4, url = url)
             db.session.add(question)
             db.session.commit()
+        elif request.form.get("editphide")=="1":
+            question=Question.query.filter_by(id = int(request.form.get("editId"))).first()
+            question.cat=request.form.get('category')
+            question.question=request.form.get('question')
+            question.corrent=request.form.get('correct_ans')
+            question.answer1=request.form.get('answer1')
+            question.answer2=request.form.get('answer2')
+            question.answer3=request.form.get('answer3')
+            question.answer4=request.form.get('answer4')
+            question.url=request.form.get('url')
+            db.session.add(question)
+            db.session.commit()
         elif request.form.get("deletephide")=="1":
             print("delete")
-            question=Question.query.filter_by(id = int(request.form.get("id_question"))).first()
+            question=Question.query.filter_by(id = int(request.form.get("deleteId"))).first()
             db.session.delete(question)
             db.session.commit()
     questions = Question.query.all()

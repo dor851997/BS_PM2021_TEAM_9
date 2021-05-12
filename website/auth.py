@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import User,Background
+from .models import User,Background,Score
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
@@ -67,10 +67,14 @@ def sign_up():
         else:
             new_user = User(email=email, first_name=first_name, password=generate_password_hash(
                 password1, method='sha256'),auth=auth)
-            if(new_user.auth=="kid"):
-                new_user.score=0
             db.session.add(new_user)
             db.session.commit()
+            if(new_user.auth=="kid"):
+                user = User.query.filter_by(email=email).first()
+                new_score= Score(user_id=user.id)
+                db.session.add(new_score)
+                db.session.commit() 
+           
             # login_user(new_user, remember=True)
             flash('Account created!', category='success')
             render_template("sign_up.html", user=current_user,background=back)

@@ -11,8 +11,17 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(150))
     auth = db.Column(db.String(50))
-    score = db.Column(db.Integer)
-    
+    scores = db.relationship('Score')
+
+class Score(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    animal_score=db.Column(db.Integer,default=0)
+    nature_score=db.Column(db.Integer,default=0)
+    math_score=db.Column(db.Integer,default=0)
+    history_score=db.Column(db.Integer,default=0)
+    color_score=db.Column(db.Integer,default=0)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
 
 class Background(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -36,11 +45,7 @@ class QuestionCategory(db.Model):
     cat = db.Column(db.String(150))
     picture=db.Column(db.String(150))
 
-class BestScore(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    UserID= db.Column(db.Integer, unique=True)
-    score= db.Column(db.Integer)
-    cat = db.Column(db.String(150))
+
     
 class MailBox(db.Model):
     id = db.Column(db.Integer, primary_key=True)

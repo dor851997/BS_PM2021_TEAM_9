@@ -21,8 +21,9 @@
         x.style.fontSize = 30 + 'px';
     }
     
-    function Quiz(clicked_id){
+    function Quiz(clicked_id,pick){
         document.getElementById("category").value=String(clicked_id);
+        document.getElementById("pick").value=String(pick);
     }
 </script>
 
@@ -35,14 +36,20 @@
                     <img src={{cat.picture}} class="card-img-top" alt="..." style="height: 15rem">
                     <div class="card-body"> 
                         <h3 class="card-title"><u>Category:</u> {{cat.cat}}</h3>
-                        <div class="d-flex justify-content-center">
-                            <input type="submit" id={{cat.cat}}  onClick="Quiz(this.id)" class="btn btn-danger" value="Start a quiz!">
-                        </div>
+                        <p class="d-flex justify-content-center">
+                            <input type="submit" id={{cat.cat}}  onClick="Quiz(this.id,'question')" class="btn btn-danger" value="Start a quiz!">
+                            
+                        </p>
+                        <p class="d-flex justify-content-center">
+                            <input type="submit" id={{cat.cat}}  onClick="Quiz(this.id,'table')" class="btn btn-info" value="Score table">
+                        </p>
                     </div>
                 </div>
             </div>
             {%endfor%}
             <input type="hidden" id="category" name="cat" value="" />
+            <input type="hidden" id="pick" name="pick" value="" />
+            
         </section>
     </article>
 </form>

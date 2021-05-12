@@ -78,6 +78,10 @@ def kidPage():
         if request.method == 'POST':
             list_dump=[]
             cat=request.form["cat"]
+            session["category"] =cat
+            print(request.form["pick"])
+            if request.form["pick"]=="table":
+                return redirect(url_for('views.score_table'))  
             if cat == "Animal":
                 questions = Question.query.filter_by(cat = "Animal").all()
             elif cat== "Nature":
@@ -90,7 +94,7 @@ def kidPage():
                 questions = Question.query.filter_by(cat = "Color").all()
             questions=RandomQuestions(questions)
             for q in questions:
-                list_dump.append(json.dumps(q,default=encoder_question))   
+                list_dump.append(json.dumps(q,default=encoder_question)) 
             session["questions"]=list_dump
             return redirect(url_for('views.question'))  
         cats = QuestionCategory.query.all()
@@ -136,7 +140,17 @@ def question():
             return redirect(url_for('views.kidPage'))
         if request.form['q_answer']==json.loads(session["questions"][0])['correct']:
             session["score"]+=50
-            current_user.score=session["score"]
+            if session["category"]=="Animal":
+                current_user.scores[0].animal_score=session["score"]
+            elif session["category"]=="Nature":
+                current_user.scores[0].nature_score=session["score"]
+            elif session["category"]=="Math":
+                current_user.scores[0].math_score=session["score"]
+            elif session["category"]=="History":
+                current_user.scores[0].history_score=session["score"]
+            elif session["category"]=="Color":
+                current_user.scores[0].color_score=session["score"]
+            
             db.session.commit() 
         else:
             return redirect(url_for('views.info'))
@@ -148,7 +162,16 @@ def question():
         else:
             return redirect(url_for('views.finishQuestions'))
     if current_user.auth=="kid":
-        session["score"]=current_user.score
+        if session["category"]=="Animal":
+            session["score"]=current_user.scores[0].animal_score
+        elif session["category"]=="Nature":
+            session["score"]=current_user.scores[0].nature_score
+        elif session["category"]=="Math":
+            session["score"]=current_user.scores[0].math_score
+        elif session["category"]=="History":
+            session["score"]=current_user.scores[0].history_score
+        elif session["category"]=="Color":
+            session["score"]=current_user.scores[0].color_score
         question=json.loads(session["questions"][0])
         return render_template("question.html", user=current_user, question = question,score=session["score"],background=back)
     
@@ -173,6 +196,58 @@ def encoder_question(question):
         }
     raise TypeError(f'Object {question} is not type of Person.')  
 
+@views.route('/score-table',methods=['GET', 'POST'])
+@login_required   
+def score_table():
+    back=Background.query.all()
+    users=User.query.filter_by(auth="kid").all()
+    users=SortByScore(users)
+    scores=getScores(users)
+    return render_template("score_table.html", user=current_user,background=back,users=users,n=len(users),scores=scores)
+
+def getScores(users):
+    scores=[]
+    if session["category"]=="Animal":
+        for i in range(len(users)):
+            scores.append(users[i].scores[0].animal_score)
+    elif session["category"]=="Nature":
+        for i in range(len(users)):
+            scores.append(users[i].scores[0].nature_score)
+    elif session["category"]=="Math":
+        for i in range(len(users)):
+            scores.append(users[i].scores[0].math_score)
+    elif session["category"]=="History":
+        for i in range(len(users)):
+            scores.append(users[i].scores[0].history_score)
+    elif session["category"]=="Color":
+        for i in range(len(users)):
+            scores.append(users[i].scores[0].color_score)
+    return scores
+
+def SortByScore(users):
+    for i in range(len(users)):
+        k=i+1
+        for j in range(k,len(users)):
+            getScoreCategory(us=users[i])
+            if getScoreCategory(us=users[i])<getScoreCategory(us=users[j]):
+                temp=users[i]
+                users[i]=users[j]
+                users[j]=temp
+    return users
+
+def getScoreCategory(us):
+    if session["category"]=="Animal":
+        return us.scores[0].animal_score
+    elif session["category"]=="Nature":
+        return us.scores[0].nature_score
+    elif session["category"]=="Math":
+        return us.scores[0].math_score
+    elif session["category"]=="History":
+        return us.scores[0].history_score
+    elif session["category"]=="Color":
+        return us.scores[0].color_score
+   
+        
 
 @views.route('/info',methods=['GET', 'POST'])
 @login_required    

@@ -20,7 +20,7 @@
       body{
         width: 100%;
         height: 800px;
-        background-image: url('');
+        background-image: url('{{current_user.background}}');
         background-size: cover;
         
       }
@@ -124,8 +124,9 @@
             <div class="dropdown-menu"    aria-labelledby="navbarDropdownMenuLink">
               {%for back in background%}
                 {%if back.checked=="true"%}
-                  <div class="nav-item" type="button" id="{{back.id}}" onclick="Background(this.id)" name="{{back.picture}}"><h5>{{back.name}}</h5></div>
+                  <div class="nav-item" type="button" id="{{back.id}}" onclick="UpdateBackground('{{ back.id }}')" name="{{back.picture}}"><h5>{{back.name}}</h5></div>
                   <div class="dropdown-divider"></div> 
+                  <!-- Background(this.id) -->
                 {%endif%}  
               {%endfor%}
             </div>
@@ -162,11 +163,18 @@
       <button class="button button5" onclick="BackBlack()">Black</button>
     </div>
     <script>
-      function Background(clicked_id){
-        x=document.getElementById(clicked_id).getAttribute("name")
-        $("body").css("background-image", "url("+x+"");
-       
+      function UpdateBackground(backId) {
+        fetch("/update-background", {
+          method: "POST",
+          body: JSON.stringify({ backId: backId }),
+        }).then((_res) => {
+          window.location.href = window.location.href;
+        });
       }
+      // function Background(clicked_id){
+      //   // x=document.getElementById(clicked_id).getAttribute("name")
+      //   // $("body").css("background-image", "url("+x+"");
+      // }
    
       function BackGreen(){
         document.body.style.backgroundColor = "green";

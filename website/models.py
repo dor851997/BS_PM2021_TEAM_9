@@ -11,7 +11,9 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(150))
     auth = db.Column(db.String(50))
+    background = db.Column(db.String(100))
     scores = db.relationship('Score')
+
 
 class Score(db.Model):
     id = db.Column(db.Integer, primary_key=True)

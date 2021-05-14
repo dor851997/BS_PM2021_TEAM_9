@@ -69,7 +69,6 @@ def editorPage():
         flash("No Permission to current user to enter editor page.", category='error')
         return render_template("adminPage.html", user=current_user,background=back)
 
-
 @views.route('/kidPage', methods=['GET', 'POST'])
 @login_required
 def kidPage():
@@ -268,6 +267,7 @@ def finishQuestions():
         return render_template("finishQuestions.html", user = current_user,background=back)
 
 @views.route('/contentManagement', methods=['GET', 'POST'])
+@login_required 
 def contentManagement():
     back=Background.query.all()
    
@@ -305,6 +305,7 @@ def contentManagement():
     return render_template("contentManagement.html", user=current_user, questions = questions,background=back)
 
 @views.route('/mailBox',methods=['GET', 'POST'])
+@login_required 
 def mailBox():
     back=Background.query.all()
     mail = MailBox.query.filter_by(to = str(current_user.email))
@@ -320,6 +321,7 @@ def mailBox():
     return render_template("mailBox.html", user=current_user, mails=mail,background=back)
 
 @views.route('/mailBoxEditor', methods=['GET', 'POST'])
+@login_required 
 def mailBoxEditor():
     back=Background.query.all()
     mail = MailBox.query.filter_by(to = str(current_user.email))
@@ -335,6 +337,7 @@ def mailBoxEditor():
     return render_template("mailBoxEditor.html", user=current_user, mails=mail,background=back)
 
 @views.route('/selectBackgrounds', methods=['GET', 'POST'])
+@login_required 
 def selectBackgrounds():
     back=Background.query.all()
     if current_user.auth=="admin":
@@ -356,4 +359,13 @@ def selectBackgrounds():
         return render_template("editorPage.html", user=current_user,background=back)
 
 
-
+@views.route('/update-background', methods=['POST'])
+@login_required 
+def update_background():
+    
+    data = json.loads(request.data)
+    backId = data['backId']
+    back = Background.query.get(backId)
+    current_user.background=back.picture
+    db.session.commit()
+    return jsonify({})

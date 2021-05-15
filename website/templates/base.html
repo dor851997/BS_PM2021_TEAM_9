@@ -116,8 +116,12 @@
             <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
             {% endif %}
             {% if user.auth=="editor" %}
+            <a class="nav-item nav-link" id="managment" href="/editorPage">Home</a>
             <a class="nav-item nav-link" id="managment" href="/contentManagement">Content Managment</a>
             <a class="nav-item nav-link" id="managment" href="/mailBoxEditor">Mail Box</a>
+            {% endif %}
+            {% if user.auth=="kid" %}
+            <a class="nav-item nav-link" id="managment" href="/kidPage">Home</a>
             {% endif %}
           <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle btnnavbar" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Background</a>

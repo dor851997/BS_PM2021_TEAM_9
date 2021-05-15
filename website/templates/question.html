@@ -13,9 +13,9 @@
 <div class="container-fluid bg-info">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form method="POST">
-          <div class="modal-header">
-              <h2><span class="label label-warning" id="qid">{{question.question}}</span></h2>
+        <form  method="POST">
+          <div id="qq" class="modal-header">
+              <h2 ><span class="label label-warning" id="question">{{question.question}}</span></h2>
           </div>
           <div class="modal-body">
                 <div class="col-xs-3 col-xs-offset-5">
@@ -31,17 +31,20 @@
                   </div>
               </div>
 
-              <div class="quiz" name="quiz" id="quiz" data-toggle="buttons">
-                <label class="element-animation1 btn btn-lg btn-primary btn-block" onclick="clickedSound()"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{question.answer1}}">{{question.answer1}}</label>
-                <label class="element-animation2 btn btn-lg btn-primary btn-block" onclick="clickedSound()"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{question.answer2}}">{{question.answer2}}</label>
-                <label class="element-animation3 btn btn-lg btn-primary btn-block" onclick="clickedSound()"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{question.answer3}}">{{question.answer3}}</label>
-                <label class="element-animation4 btn btn-lg btn-primary btn-block" onclick="clickedSound()"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{question.answer4}}">{{question.answer4}}</label>
+              <label style="color:rgb(179, 16, 16);font-size:50px;text-align:center;" id="timeUp"></label>
+
+              <div id="answers" class="quiz" name="quiz" id="quiz" data-toggle="buttons">
+                <label  class="element-animation1 btn btn-lg btn-primary btn-block" onclick="clickedSound()"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{question.answer1}}">{{question.answer1}}</label>
+                <label  class="element-animation2 btn btn-lg btn-primary btn-block" onclick="clickedSound()"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{question.answer2}}">{{question.answer2}}</label>
+                <label  class="element-animation3 btn btn-lg btn-primary btn-block" onclick="clickedSound()"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{question.answer3}}">{{question.answer3}}</label>
+                <label  class="element-animation4 btn btn-lg btn-primary btn-block" onclick="clickedSound()"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="{{question.answer4}}">{{question.answer4}}</label>
               </div>
           </div>
           <div style="background-color: rgb(218, 204, 199);">
-            <h3><u>Score:{{score}}</u></h3>
+            <div><label style="color:rgb(16, 71, 189);font-size:25px;">Timer:<label id="time001">{{question.timer}}</label></label></div>
+            <label style="color:rgb(9, 170, 36);font-size:25px;">Score:{{score}}</label>
             <div class="d-flex justify-content-center">
-            <button type="submit" class="btn btn-success" onmouseover="nextSound()" >Next question</button>
+            <button type="submit" id="btn_next" class="btn btn-success" onmouseover="nextSound()" >Next question</button>
           </div>
           </div>
           <div class="modal-footer text-muted">
@@ -52,7 +55,26 @@
   </div>
 </div>
 <script type="text/javascript">
-  
+  var c='{{question.timer}}';
+  function timer001() {
+      c = c - 1;
+      if (c < 200) {
+          time001.innerHTML = c;
+      }
+
+      if (c < 1) {
+          window.clearInterval(update);
+          question.innerHTML = "";
+          answers.innerHTML = "";
+          qq.innerHTML="";
+          btn_next.style.display = "none";
+          timeUp.innerHTML = "&emsp;&emsp;Time's up";
+          
+          
+      }
+  }
+  update = setInterval("timer001()", 1000);
+
   function finish_click(clicked_id)
   {
       document.getElementById("finish").value=String(1);

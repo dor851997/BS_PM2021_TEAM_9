@@ -41,6 +41,7 @@ class Question(db.Model):
     answer3 = db.Column(db.String(150))
     answer4 = db.Column(db.String(150))
     url = db.Column(db.String(1500))
+    timer=db.Column(db.Integer,default=30)
 
 class QuestionCategory(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -61,7 +61,7 @@ def userManagment():
 def editorPage():
     back=Background.query.all()
     if current_user.auth=="editor":
-        return render_template("editorPage.html", user=current_user)
+        return render_template("editorPage.html", user=current_user,background=back)
     elif current_user.auth=="kid":
         flash("No Permission to current user to enter editor page.", category='error')
         return render_template("kidPage.html", user=current_user,background=back)
@@ -191,6 +191,7 @@ def encoder_question(question):
         'answer2':question.answer2,
         'answer3':question.answer3,
         'answer4':question.answer4,
+        'timer':question.timer,
         'url':question.url
         }
     raise TypeError(f'Object {question} is not type of Person.')  
@@ -293,6 +294,7 @@ def contentManagement():
             question.answer2=request.form.get('answer2')
             question.answer3=request.form.get('answer3')
             question.answer4=request.form.get('answer4')
+            question.timer=request.form.get('timer')
             question.url=request.form.get('url')
             db.session.add(question)
             db.session.commit()

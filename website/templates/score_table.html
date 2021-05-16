@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
+  <title>Score Table</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -46,7 +46,9 @@
 <body>
 
 <div class="container">
-  <h2>{{session["category"]}} Score Table</h2>
+  <h2 class="d-flex justify-content-center" style="background-color: oldlace;
+  font-style: italic; border-style: dotted;
+  border-width: thick; border-radius: 5px; font-family: bold;">{{session["category"]}} Score</h2>
   <table id="t01">
     <thead>
       <tr class="success">

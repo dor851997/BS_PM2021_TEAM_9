@@ -248,7 +248,7 @@ def getScoreCategory(us):
         return us.scores[0].color_score
    
         
-
+ 
 @views.route('/info',methods=['GET', 'POST'])
 @login_required    
 def info():
@@ -371,3 +371,27 @@ def update_background():
     current_user.background=back.picture
     db.session.commit()
     return jsonify({})
+
+@views.route('/tableManagment', methods=['GET', 'POST'])
+@login_required
+def tableManagment():
+    back=Background.query.all()
+    users=User.query.filter_by(auth="kid").all()
+    session["category"] = "Animal"
+    animal_users=SortByScore(users)
+    animal_scores=getScores(users)
+    session["category"] = "Nature"
+    nature_users=SortByScore(users)
+    nature_scores=getScores(users)
+    session["category"] = "Math"
+    math_users=SortByScore(users)
+    math_scores=getScores(users)
+    session["category"] = "History"
+    history_users=SortByScore(users)
+    history_scores=getScores(users)
+    session["category"] = "Color"
+    color_users=SortByScore(users)
+    color_scores=getScores(users)
+    return render_template("tableManagment.html", user=current_user, background=back, animal_users=animal_users, animal_scores=animal_scores, 
+    nature_users=nature_users, nature_scores=nature_scores, math_users=math_users, math_scores=math_scores, history_users=history_users, history_scores=history_scores,
+     color_users=color_users, color_scores=color_scores)

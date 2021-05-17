@@ -378,20 +378,26 @@ def tableManagment():
     back=Background.query.all()
     users=User.query.filter_by(auth="kid").all()
     session["category"] = "Animal"
+    animal_cat = "Animal"
     animal_users=SortByScore(users)
     animal_scores=getScores(users)
     session["category"] = "Nature"
+    nature_cat = "Nature"
     nature_users=SortByScore(users)
     nature_scores=getScores(users)
     session["category"] = "Math"
+    math_cat = "Math"
     math_users=SortByScore(users)
     math_scores=getScores(users)
     session["category"] = "History"
+    history_cat = "History"
     history_users=SortByScore(users)
     history_scores=getScores(users)
     session["category"] = "Color"
+    color_cat = "Color"
     color_users=SortByScore(users)
     color_scores=getScores(users)
     return render_template("tableManagment.html", user=current_user, background=back, animal_users=animal_users, animal_scores=animal_scores, 
     nature_users=nature_users, nature_scores=nature_scores, math_users=math_users, math_scores=math_scores, history_users=history_users, history_scores=history_scores,
-     color_users=color_users, color_scores=color_scores)
+     color_users=color_users, color_scores=color_scores, animal_cat=animal_cat, nature_cat=nature_cat, math_cat=math_cat, history_cat=history_cat,
+     color_cat=color_cat,a=len(animal_users), n=len(nature_users), m=len(math_users), h=len(history_users), c=len(color_users))

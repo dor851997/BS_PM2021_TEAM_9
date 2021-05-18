@@ -1,6 +1,9 @@
 from main import app
 from website import auth,db,models
 import unittest
+from flask import session
+from website import db
+from website.models import  User, Question, QuestionCategory, MailBox ,Background,Score
 
 
 
@@ -74,7 +77,7 @@ class KidTestCase(unittest.TestCase):
         )
         response=tester.post(
             '/kidPage',
-            data=dict(cat=category),
+            data=dict(cat=category,pick="category"),
             follow_redirects=True
         )
         return response
@@ -88,7 +91,7 @@ class KidTestCase(unittest.TestCase):
         )
         tester.post(
             '/kidPage',
-            data=dict(cat=category),
+            data=dict(cat=category,pick="category"),
             follow_redirects=True
         )
         return tester
@@ -208,7 +211,7 @@ class AdminTestCase(unittest.TestCase):
         tester.get('/userManagment', follow_redirects=True)
         response=tester.post(
             '/userManagment',
-            data=dict(addphide="1",id_user="3",first_name="kid",email="kid@gmail.com",password="1234567",auth="kid"),
+            data=dict(editphide="1",editId="3",first_name="kid",email="kid@gmail.com",password="1234567",auth="kid"),
             follow_redirects=True
         )
         self.assertIn(b'userManagment', response.data) 
@@ -218,30 +221,32 @@ class AdminTestCase(unittest.TestCase):
         tester.get('/userManagment', follow_redirects=True)
         response=tester.post(
             '/userManagment',
-            data=dict(deletephide="1",id_user="4"),
+            data=dict(deletephide="1",deleteId="8"),
             follow_redirects=True
         )
         self.assertIn(b'userManagment', response.data) 
 
     def test_Admin_Sign_Up_add_new(self):
         tester=self.Post_tester_Admin_Page()
-        tester.get('/sign-up', follow_redirects=True)
+        tester.get('/userManagment', follow_redirects=True)
         response=tester.post(
-            '/sign-up',
-            data=dict(email="kid2@gmail.com",firstName="kid2",password1="1234567",password2="1234567",authorization="kid"),
+            '/userManagment',
+            data=dict(addphide="1",add_email="kid4@gmail.com",add_firstname="kid4",
+            add_password1="1234567",add_password2="1234567",add_auth="kid"),
             follow_redirects=True
         )
-        self.assertIn(b'Sign Up', response.data)
+        self.assertIn(b'userManagment', response.data)
 
     def test_Admin_Sign_Up_add_existing_user(self):
         tester=self.Post_tester_Admin_Page()
-        tester.get('/sign-up', follow_redirects=True)
+        tester.get('/userManagment', follow_redirects=True)
         response=tester.post(
-            '/sign-up',
-            data=dict(email="kid@gmail.com",firstName="kid",password1="1234567",password2="1234567",authorization="kid"),
+            '/userManagment',
+            data=dict(addphide="1",add_email="kid@gmail.com",add_firstname="kid",
+            add_password1="1234567",add_password2="1234567",add_auth="kid"),
             follow_redirects=True
         )
-        self.assertIn(b'Sign Up', response.data)
+        self.assertIn(b'userManagment', response.data)
 
     def test_Admin_Content_Management_response(self):
         tester=self.Post_tester_Admin_Page()
@@ -261,11 +266,11 @@ class AdminTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'selectBackgrounds', response.data)
 
-    def test_Admin_Sign_Up_response(self):
+    def test_Admin_Add_User_response(self):
         tester=self.Post_tester_Admin_Page()
-        response=tester.get('/sign-up', follow_redirects=True)
+        response=tester.get('/userManagment', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Sign Up', response.data)
+        self.assertIn(b'userManagment', response.data)
 
     def test_Admin_logout(self):
         tester=self.Post_tester_Admin_Page()

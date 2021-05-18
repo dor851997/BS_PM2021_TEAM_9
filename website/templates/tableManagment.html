@@ -293,6 +293,16 @@
 
 
 </head>
+<div class="container-xl">
+<div class="table-responsive">
+<div class="table-wrapper">
+<div class="row">
+<h2><b>Score Table Management</b></h2>
+</div>
+</div>
+</div>
+</div>
+</div>
 <body_table>
     <!-- View registered users :  -->
     <div class="container-xl">
@@ -301,7 +311,7 @@
                 <div class="table-title">
                     <div class="row">
                         <div class="col-sm-6">
-                            <h2>Score Table <b>Management</b></h2>
+                            <h2><b>{{animal_cat}} Table</b></h2>
                         </div>
                     </div>
                 </div>
@@ -314,7 +324,6 @@
                             <th>Firstname</th>
                             <th>Email</th>
                             <th>Score</th>
-                            <th>Category</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -326,51 +335,6 @@
                             <td>{{animal_users[i].first_name}}</td>
                             <td>{{animal_users[i].email}}</td>
                             <td>{{animal_scores[i]}}</td>
-                            <td>{{animal_cat}}</td>
-                        </tr>
-                        {%endfor%}
-                        {%for i in range(n)%}
-                        <tr>
-                            <td>
-                            </td>
-                            <td>{{i+1}}</td>
-                            <td>{{nature_users[i].first_name}}</td>
-                            <td>{{nature_users[i].email}}</td>
-                            <td>{{nature_scores[i]}}</td>
-                            <td>{{nature_cat}}</td>
-                        </tr>
-                        {%endfor%}
-                        {%for i in range(m)%}
-                        <tr>
-                            <td>
-                            </td>
-                            <td>{{i+1}}</td>
-                            <td>{{math_users[i].first_name}}</td>
-                            <td>{{math_users[i].email}}</td>
-                            <td>{{math_scores[i]}}</td>
-                            <td>{{math_cat}}</td>
-                        </tr>
-                        {%endfor%}
-                        {%for i in range(h)%}
-                        <tr>
-                            <td>
-                            </td>
-                            <td>{{i+1}}</td>
-                            <td>{{history_users[i].first_name}}</td>
-                            <td>{{history_users[i].email}}</td>
-                            <td>{{history_scores[i]}}</td>
-                            <td>{{history_cat}}</td>
-                        </tr>
-                        {%endfor%}
-                        {%for i in range(c)%}
-                        <tr>
-                            <td>
-                            </td>
-                            <td>{{i+1}}</td>
-                            <td>{{color_users[i].first_name}}</td>
-                            <td>{{color_users[i].email}}</td>
-                            <td>{{color_scores[i]}}</td>
-                            <td>{{color_cat}}</td>
                         </tr>
                         {%endfor%}
                     </tbody>
@@ -380,6 +344,171 @@
     </div>
    
 </body_table>
+<body_table>
+    <!-- View registered users :  -->
+    <div class="container-xl">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2><b>{{nature_cat}} Table</b></h2>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                            </th>
+                            <th>Place</th>
+                            <th>Firstname</th>
+                            <th>Email</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for i in range(n)%}
+                        <tr>
+                            <td>
+                            </td>
+                            <td>{{i+1}}</td>
+                            <td>{{nature_users[i].first_name}}</td>
+                            <td>{{nature_users[i].email}}</td>
+                            <td>{{nature_scores[i]}}</td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+   
+</body_table>
+<body_table>
+    <!-- View registered users :  -->
+    <div class="container-xl">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2><b>{{math_cat}} Table</b></h2>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                            </th>
+                            <th>Place</th>
+                            <th>Firstname</th>
+                            <th>Email</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for i in range(m)%}
+                        <tr>
+                            <td>
+                            </td>
+                            <td>{{i+1}}</td>
+                            <td>{{math_users[i].first_name}}</td>
+                            <td>{{math_users[i].email}}</td>
+                            <td>{{math_scores[i]}}</td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+   
+</body_table>
+<body_table>
+    <!-- View registered users :  -->
+    <div class="container-xl">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2><b>{{history_cat}} Table</b></h2>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                            </th>
+                            <th>Place</th>
+                            <th>Firstname</th>
+                            <th>Email</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for i in range(h)%}
+                        <tr>
+                            <td>
+                            </td>
+                            <td>{{i+1}}</td>
+                            <td>{{history_users[i].first_name}}</td>
+                            <td>{{history_users[i].email}}</td>
+                            <td>{{history_scores[i]}}</td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+   
+</body_table>
+<body_table>
+    <!-- View registered users :  -->
+    <div class="container-xl">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2><b>{{color_cat}} Table</b></h2>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                            </th>
+                            <th>Place</th>
+                            <th>Firstname</th>
+                            <th>Email</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for i in range(c)%}
+                        <tr>
+                            <td>
+                            </td>
+                            <td>{{i+1}}</td>
+                            <td>{{color_users[i].first_name}}</td>
+                            <td>{{color_users[i].email}}</td>
+                            <td>{{color_scores[i]}}</td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+   
+</body_table>
+
 
 </html>
 {% endblock %}

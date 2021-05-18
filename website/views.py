@@ -420,6 +420,23 @@ def update_background():
 @views.route('/tableManagment', methods=['GET', 'POST'])
 @login_required
 def tableManagment():
+    if request.method == 'POST':
+        if request.form.get("editphide")=="1":##edit a score
+            user=User.query.filter_by(id = int(request.form.get("editId"))).first()
+            score = Score.query.filter_by(user_id = user.id).first()
+            if request.form.get("cat") == "Animal":
+                score.animal_score = request.form.get("auth")
+            elif request.form.get("cat") == "Nature":
+                score.nature_score = request.form.get("auth")
+            elif request.form.get("cat") == "Math":
+                score.math_score = request.form.get("auth")
+            elif request.form.get("cat") == "History":
+                score.history_score = request.form.get("auth")
+            elif request.form.get("cat") == "Color":
+                score.color_score = request.form.get("auth")
+            db.session.add(score)
+            db.session.commit()
+            flash('Account edited!', category='success')
     back=Background.query.all()
     users=User.query.filter_by(auth="kid").all()
     session["category"] = "Animal"

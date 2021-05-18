@@ -329,6 +329,50 @@
                             <td>{{animal_cat}}</td>
                         </tr>
                         {%endfor%}
+                        {%for i in range(n)%}
+                        <tr>
+                            <td>
+                            </td>
+                            <td>{{i+1}}</td>
+                            <td>{{nature_users[i].first_name}}</td>
+                            <td>{{nature_users[i].email}}</td>
+                            <td>{{nature_scores[i]}}</td>
+                            <td>{{nature_cat}}</td>
+                        </tr>
+                        {%endfor%}
+                        {%for i in range(m)%}
+                        <tr>
+                            <td>
+                            </td>
+                            <td>{{i+1}}</td>
+                            <td>{{math_users[i].first_name}}</td>
+                            <td>{{math_users[i].email}}</td>
+                            <td>{{math_scores[i]}}</td>
+                            <td>{{math_cat}}</td>
+                        </tr>
+                        {%endfor%}
+                        {%for i in range(h)%}
+                        <tr>
+                            <td>
+                            </td>
+                            <td>{{i+1}}</td>
+                            <td>{{history_users[i].first_name}}</td>
+                            <td>{{history_users[i].email}}</td>
+                            <td>{{history_scores[i]}}</td>
+                            <td>{{history_cat}}</td>
+                        </tr>
+                        {%endfor%}
+                        {%for i in range(c)%}
+                        <tr>
+                            <td>
+                            </td>
+                            <td>{{i+1}}</td>
+                            <td>{{color_users[i].first_name}}</td>
+                            <td>{{color_users[i].email}}</td>
+                            <td>{{color_scores[i]}}</td>
+                            <td>{{color_cat}}</td>
+                        </tr>
+                        {%endfor%}
                     </tbody>
                 </table>
             </div>

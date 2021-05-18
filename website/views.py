@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import random
 from . import db
 import json
-from .models import User, Question, QuestionCategory, MailBox ,Background
+from .models import User, Question, QuestionCategory, MailBox ,Background,Score
 
 views = Blueprint('views', __name__)
 
@@ -33,18 +33,26 @@ def userManagment():
     back=Background.query.all()
     if current_user.auth=="admin":
         if request.method == 'POST':
-            if request.form.get("addphide")=="1":##edit a user
-                user=User.query.filter_by(id = int(request.form.get("id_user"))).first()
+            if request.form.get("editphide")=="1":##edit a user
+                user=User.query.filter_by(id = int(request.form.get("editId"))).first()
                 user.first_name=request.form.get("first_name")
                 user.email=request.form.get("email")
                 user.password=generate_password_hash( request.form.get("password"), method='sha256')
                 user.auth=request.form.get("auth")
                 db.session.add(user)
                 db.session.commit()
+                flash('Account edited!', category='success')
+            elif request.form.get("addphide")=="1":
+                AddUser()
+
             elif request.form.get("deletephide")=="1":##delete a user
-                user=User.query.filter_by(id = int(request.form.get("id_user"))).first()
+                user=User.query.filter_by(id = int(request.form.get("deleteId"))).first()
+                ref_score= Score.query.filter_by(user_id=user.id).first()
+                db.session.delete(ref_score)
+                db.session.commit()   
                 db.session.delete(user)
                 db.session.commit()
+                flash('Account deleted!', category='success')
             users=User.query.all()
             return render_template("userManagment.html", user= current_user,alluser=users,background=back)
         users = User.query.all()
@@ -55,7 +63,43 @@ def userManagment():
     else:
         flash("No Permission to current user to enter admin page.", category='error')
         return render_template("editorPage.html", user=current_user,background=back)
-    
+
+
+def AddUser():
+    back=Background.query.all()
+    email = request.form.get('add_email')
+    first_name = request.form.get('add_firstname')
+    password1 = request.form.get('add_password1')
+    password2 = request.form.get('add_password2')
+    auth = request.form.get('add_auth')
+    user = User.query.filter_by(email=email).first()
+    if user:
+        flash('Email already exists.', category='error')
+    elif len(email) < 4:
+        flash('Email must be greater than 3 characters.', category='error')
+    elif len(first_name) < 2:
+        flash('First name must be greater than 1 character.', category='error')
+    elif password1 != password2:
+        flash('Passwords don\'t match.', category='error')
+    elif len(password1) < 7:
+        flash('Password must be at least 7 characters.', category='error')
+    else:
+        new_user = User(email=email, first_name=first_name, password=generate_password_hash(
+            password1, method='sha256'),auth=auth)
+        db.session.add(new_user)
+        db.session.commit()
+        if(new_user.auth=="kid"):
+            user = User.query.filter_by(email=email).first()
+            new_score= Score(user_id=user.id)
+            db.session.add(new_score)
+            db.session.commit() 
+        
+        # login_user(new_user, remember=True)
+        flash('Account created!', category='success')
+
+    render_template("userManagment.html", user=current_user,background=back)
+
+
 @views.route('/editorPage')
 @login_required    
 def editorPage():
@@ -68,6 +112,7 @@ def editorPage():
     else:
         flash("No Permission to current user to enter editor page.", category='error')
         return render_template("adminPage.html", user=current_user,background=back)
+
 
 @views.route('/kidPage', methods=['GET', 'POST'])
 @login_required

@@ -487,3 +487,9 @@ def questionsReport():
     questions=Question.query.all()
     category=QuestionCategory.query.all()
     return render_template("questionsReport.html",user=current_user,questions=questions,background=back,category=category) 
+
+@views.route('/hallOfFame', methods=['GET', 'POST'])
+@login_required
+def hallOfFame():
+    back=Background.query.all()
+    return render_template("hallOfFame.html", user=current_user,background=back)

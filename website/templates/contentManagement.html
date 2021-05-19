@@ -320,8 +320,8 @@
         // {
         //     document.getElementById("phide").value=String(clicked_id);
         // }
-        function add_click() {
-
+        function add_click(category) {
+            document.getElementById("add_category").value = category;
             document.getElementById("addphide").value = String(1);
         }
         function delete_click(clicked_id) {
@@ -346,19 +346,25 @@
     </script>
 
 </head>
+<div class="container">
+    <h2 class="d-flex justify-content-center" style="background-color: oldlace;
+    font-style: italic; border-style: dotted;
+    border-width: thick; border-radius: 5px; font-family: bold;">Content Management</h2></div>
+
 <body_table>
     <!-- View registered users :  -->
     <div class="container-xl">
+        {%for cat in category%}
         <div class="table-responsive">
             <div class="table-wrapper">
                 <div class="table-title">
                     <div class="row">
                         <div class="col-sm-6">
-                            <h2>Content Management</h2>
+                            <h2>{{cat.cat}} Management</h2>
                         </div>
                         <div class="col-sm-6">
                             <a href="#addEmployeeModal" 
-                            onclick="add_click()" class="btn btn-success" data-toggle="modal"><i
+                            onclick="add_click('{{cat.cat}}')" class="btn btn-success" data-toggle="modal"><i
                                     class="material-icons">&#xE147;</i> <span>Add New Question</span></a>
                         </div>
                     </div>
@@ -380,6 +386,7 @@
                     </thead>
                     <tbody>
                         {%for q in questions%}
+                        {%if q.cat==cat.cat%}
                         <tr>
                             <td>
                             </td>
@@ -402,11 +409,13 @@
                                 
                             </td>
                         </tr>
+                        {%endif%}
                         {%endfor%}
                     </tbody>
                 </table>
             </div>
         </div>
+        {%endfor%}
     </div>
     <!-- Modal HTML :  -->
     <!-- Add Model HTML -->
@@ -421,7 +430,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Category</label>
-                            <input type="text" name="category" class="form-control" required>
+                            <input type="text" id="add_category" name="category" class="form-control" readonly>
                         </div>
                         <div class="form-group">
                             <label>Question</label>
@@ -544,7 +553,6 @@
             </div>
         </div>
     </div>
-   
 </body_table>
 
 </html>

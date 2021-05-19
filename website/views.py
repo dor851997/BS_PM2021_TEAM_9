@@ -326,7 +326,7 @@ def finishQuestions():
 @login_required 
 def contentManagement():
     back=Background.query.all()
-   
+    cat=QuestionCategory.query.all()
     if request.method == 'POST':
         if request.form.get("addphide")=="1":
             cat = request.form.get('category')
@@ -344,7 +344,7 @@ def contentManagement():
             question=Question.query.filter_by(id = int(request.form.get("editId"))).first()
             question.cat=request.form.get('category')
             question.question=request.form.get('question')
-            question.corrent=request.form.get('correct_ans')
+            question.correct=request.form.get('correct_ans')
             question.answer1=request.form.get('answer1')
             question.answer2=request.form.get('answer2')
             question.answer3=request.form.get('answer3')
@@ -359,7 +359,7 @@ def contentManagement():
             db.session.delete(question)
             db.session.commit()
     questions = Question.query.all()
-    return render_template("contentManagement.html", user=current_user, questions = questions,background=back)
+    return render_template("contentManagement.html", user=current_user, questions = questions,background=back,category=cat)
 
 @views.route('/mailBox',methods=['GET', 'POST'])
 @login_required 

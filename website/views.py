@@ -270,15 +270,18 @@ def getScores(users):
     return scores
 
 def SortByScore(users):
+    tempusers = []
     for i in range(len(users)):
+        tempusers.insert(i,users[i])
+    for i in range(len(tempusers)):
         k=i+1
-        for j in range(k,len(users)):
-            getScoreCategory(us=users[i])
-            if getScoreCategory(us=users[i])<getScoreCategory(us=users[j]):
-                temp=users[i]
-                users[i]=users[j]
-                users[j]=temp
-    return users
+        for j in range(k,len(tempusers)):
+            getScoreCategory(us=tempusers[i])
+            if getScoreCategory(us=tempusers[i])<getScoreCategory(us=tempusers[j]):
+                temp=tempusers[i]
+                tempusers[i]=tempusers[j]
+                tempusers[j]=temp
+    return tempusers
 
 def getScoreCategory(us):
     if session["category"]=="Animal":
@@ -434,6 +437,8 @@ def tableManagment():
                 score.history_score = request.form.get("auth")
             elif request.form.get("cat") == "Color":
                 score.color_score = request.form.get("auth")
+            print(user.first_name)
+            print(score.id)
             db.session.add(score)
             db.session.commit()
             flash('Account edited!', category='success')
@@ -442,23 +447,25 @@ def tableManagment():
     session["category"] = "Animal"
     animal_cat = "Animal"
     animal_users=SortByScore(users)
-    animal_scores=getScores(users)
+    animal_scores=getScores(animal_users)
+    for i in range(len(animal_users)):
+        print(animal_users[i].first_name)
     session["category"] = "Nature"
     nature_cat = "Nature"
     nature_users=SortByScore(users)
-    nature_scores=getScores(users)
+    nature_scores=getScores(nature_users)
     session["category"] = "Math"
     math_cat = "Math"
     math_users=SortByScore(users)
-    math_scores=getScores(users)
+    math_scores=getScores(math_users)
     session["category"] = "History"
     history_cat = "History"
     history_users=SortByScore(users)
-    history_scores=getScores(users)
+    history_scores=getScores(history_users)
     session["category"] = "Color"
     color_cat = "Color"
     color_users=SortByScore(users)
-    color_scores=getScores(users)
+    color_scores=getScores(color_users)
     return render_template("tableManagment.html", user=current_user, background=back, animal_users=animal_users, animal_scores=animal_scores, 
     nature_users=nature_users, nature_scores=nature_scores, math_users=math_users, math_scores=math_scores, history_users=history_users, history_scores=history_scores,
      color_users=color_users, color_scores=color_scores, animal_cat=animal_cat, nature_cat=nature_cat, math_cat=math_cat, history_cat=history_cat,

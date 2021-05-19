@@ -183,7 +183,9 @@ def question():
         if request.form.get('finish1')=="1":        
             return redirect(url_for('views.kidPage'))
         if request.form['q_answer']==json.loads(session["questions"][0])['correct']:
-            session["score"]+=50
+            session["score"]+=50  
+            quest=Question.query.filter_by(id=json.loads(session["questions"][0])['id']).first()
+            quest.corrects+=1
             if session["category"]=="Animal":
                 current_user.scores[0].animal_score=session["score"]
             elif session["category"]=="Nature":
@@ -193,12 +195,14 @@ def question():
             elif session["category"]=="History":
                 current_user.scores[0].history_score=session["score"]
             elif session["category"]=="Color":
-                current_user.scores[0].color_score=session["score"]
-            
-            db.session.commit() 
+                current_user.scores[0].color_score=session["score"]  
+            db.session.commit()    
         else:
+            quest=Question.query.filter_by(id=json.loads(session["questions"][0])['id']).first()
+            quest.wrongs+=1
+            db.session.commit()
             return redirect(url_for('views.info'))
-    
+
         session["questions"].pop(0)
         if len(session["questions"])!=0:
             question=json.loads(session["questions"][0])
@@ -229,7 +233,8 @@ def question():
 
 def encoder_question(question):
     if isinstance(question,Question):
-        return {'cat':question.cat,
+        return {'id':question.id,
+        'cat':question.cat,
         'question':question.question,
         'correct':question.correct,
         'answer1':question.answer1,
@@ -237,7 +242,9 @@ def encoder_question(question):
         'answer3':question.answer3,
         'answer4':question.answer4,
         'timer':question.timer,
-        'url':question.url
+        'url':question.url,
+        'corrects':question.corrects,
+        'wrongs':question.wrongs
         }
     raise TypeError(f'Object {question} is not type of Person.')  
 
@@ -470,3 +477,13 @@ def tableManagment():
     nature_users=nature_users, nature_scores=nature_scores, math_users=math_users, math_scores=math_scores, history_users=history_users, history_scores=history_scores,
      color_users=color_users, color_scores=color_scores, animal_cat=animal_cat, nature_cat=nature_cat, math_cat=math_cat, history_cat=history_cat,
      color_cat=color_cat,a=len(animal_users), n=len(nature_users), m=len(math_users), h=len(history_users), c=len(color_users))
+
+    
+
+@views.route('/questionsReport', methods=['GET', 'POST'])
+@login_required 
+def questionsReport():
+    back=Background.query.all()
+    questions=Question.query.all()
+    category=QuestionCategory.query.all()
+    return render_template("questionsReport.html",user=current_user,questions=questions,background=back,category=category) 

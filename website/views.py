@@ -455,8 +455,6 @@ def tableManagment():
     animal_cat = "Animal"
     animal_users=SortByScore(users)
     animal_scores=getScores(animal_users)
-    for i in range(len(animal_users)):
-        print(animal_users[i].first_name)
     session["category"] = "Nature"
     nature_cat = "Nature"
     nature_users=SortByScore(users)
@@ -492,4 +490,28 @@ def questionsReport():
 @login_required
 def hallOfFame():
     back=Background.query.all()
-    return render_template("hallOfFame.html", user=current_user,background=back)
+    users=User.query.filter_by(auth="kid").all()
+    session["category"] = "Animal"
+    animal_cat = "Animal"
+    animal_users=SortByScore(users)
+    animal_scores=getScores(animal_users)
+    session["category"] = "Nature"
+    nature_cat = "Nature"
+    nature_users=SortByScore(users)
+    nature_scores=getScores(nature_users)
+    session["category"] = "Math"
+    math_cat = "Math"
+    math_users=SortByScore(users)
+    math_scores=getScores(math_users)
+    session["category"] = "History"
+    history_cat = "History"
+    history_users=SortByScore(users)
+    history_scores=getScores(history_users)
+    session["category"] = "Color"
+    color_cat = "Color"
+    color_users=SortByScore(users)
+    color_scores=getScores(color_users)
+    return render_template("hallOfFame.html",user=current_user, background=back, animal_user=animal_users[0], animal_score=animal_scores[0], 
+    nature_user=nature_users[0], nature_score=nature_scores[0], math_user=math_users[0], math_score=math_scores[0], history_user=history_users[0], history_score=history_scores[0],
+     color_user=color_users[0], color_score=color_scores[0], animal_cat=animal_cat, nature_cat=nature_cat, math_cat=math_cat, history_cat=history_cat,
+     color_cat=color_cat)

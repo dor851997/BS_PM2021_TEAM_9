@@ -3,7 +3,8 @@ from .models import User,Background,Score
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
-from datetime import timedelta
+from datetime import timedelta , datetime, time
+
 
 auth = Blueprint('auth', __name__)
 
@@ -18,6 +19,9 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user:
             if check_password_hash(user.password, password):
+                if( is_time_between(time(8,00), time(20,00)) != True  and  user.auth=="kid"):
+                        flash('kid user can only use this website between 8AM ~ 8PM',category='error')
+                        return redirect(url_for('auth.login'))
                 flash('Logged in successfully!', category='success')
                 login_user(user, remember=True)
                 if user.auth=="kid":
@@ -82,3 +86,10 @@ def sign_up():
 
 
 
+def is_time_between(begin_time, end_time, check_time=None):
+    # If check time is not given, default to current UTC time
+    check_time = check_time or datetime.now().time()
+    if begin_time < end_time:
+        return check_time >= begin_time and check_time <= end_time
+    else: # crosses midnight
+        return check_time >= begin_time or check_time <= end_time

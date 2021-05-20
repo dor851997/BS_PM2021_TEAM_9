@@ -74,11 +74,17 @@
   transform: rotate(45deg);
 }
 </style>
-<body>
+<!-- <body>
   <label class="d-flex justify-content-start" style="background-color: oldlace;
   font-style: italic; border-style: dotted;
   border-width: thick; border-radius: 5px; font-family: bold;
-  width: 25%; margin-left: 10%; margin-top: 10px; margin-bottom: 10px;"><h1>Select Backgrounds</h1></label>
+  width: 25%; margin-left: 10%; margin-top: 10px; margin-bottom: 10px;"><h1>Select Backgrounds</h1></label> -->
+
+<div class="container">
+  <h2 class="d-flex justify-content-center" style="background-color: oldlace;
+  font-style: italic; border-style: dotted;
+  border-width: thick; border-radius: 5px; font-family: bold;">Select Backgrounds</h2>
+</div>
 <form method="POST">
     {%for back in background%}
         {%if back.checked=="true"%}

@@ -244,7 +244,8 @@ def encoder_question(question):
         'timer':question.timer,
         'url':question.url,
         'corrects':question.corrects,
-        'wrongs':question.wrongs
+        'wrongs':question.wrongs,
+        'photoUrl':question.photoUrl
         }
     raise TypeError(f'Object {question} is not type of Person.')  
 
@@ -337,7 +338,8 @@ def contentManagement():
             answer3 = request.form.get('answer3')
             answer4 = request.form.get('answer4')
             url = request.form.get('url')
-            question = Question(cat = cat, question = que, correct = correct_ans, answer1 = answer1, answer2 = answer2, answer3 = answer3, answer4 = answer4, url = url)
+            photoUrl = request.form.get('photoUrl')
+            question = Question(cat = cat, question = que, correct = correct_ans, answer1 = answer1, answer2 = answer2, answer3 = answer3, answer4 = answer4, url = url ,photoUrl=photoUrl)
             db.session.add(question)
             db.session.commit()
         elif request.form.get("editphide")=="1":
@@ -351,6 +353,7 @@ def contentManagement():
             question.answer4=request.form.get('answer4')
             question.timer=request.form.get('timer')
             question.url=request.form.get('url')
+            question.photoUrl=request.form.get('photoUrl')
             db.session.add(question)
             db.session.commit()
         elif request.form.get("deletephide")=="1":

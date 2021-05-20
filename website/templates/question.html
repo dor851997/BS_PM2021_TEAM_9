@@ -17,6 +17,9 @@
           <div id="qq" class="modal-header">
               <h2 ><span class="label label-warning" id="question">{{question.question}}</span></h2>
           </div>
+          <div id="img1">
+            <img src={{question.photoUrl}} class="card-img-top" alt="..." style="height: 15rem; width: 25rem; margin-left: 125px;">
+          </div>
           <div class="modal-body">
                 <div class="col-xs-3 col-xs-offset-5">
                   <div id="loadbar" style="display: none;">
@@ -67,6 +70,7 @@
           question.innerHTML = "";
           answers.innerHTML = "";
           qq.innerHTML="";
+          img1.innerHTML="";
           btn_next.style.display = "none";
           timeUp.innerHTML = "&emsp;&emsp;Time's up";
           

@@ -15,6 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script> -->
     <style>
+
         body_table {
             color: #566787;
             background: #f5f5f5;
@@ -81,6 +82,11 @@
             border-color: #e9e9e9;
             padding: 12px 15px;
             vertical-align: middle;
+            overflow: hidden;
+        }
+        table{
+            table-layout: fixed;
+
         }
 
         table.table tr th:first-child {
@@ -328,7 +334,7 @@
             document.getElementById("deleteId").value = String(clicked_id);
             document.getElementById("deletephide").value = String(1);
         }
-        function edit_click(clicked_id,cat,quest,correct,ans1,ans2,ans3,ans4,timer,url) {
+        function edit_click(clicked_id,cat,quest,correct,ans1,ans2,ans3,ans4,timer,url , photoUrl) {
             document.getElementById("editId").value = String(clicked_id);
             document.getElementById("editphide").value = String(1);
             document.getElementById("category").value = cat;
@@ -340,6 +346,7 @@
             document.getElementById("ans4").value = ans4;
             document.getElementById("timer").value = timer;
             document.getElementById("url").value = url;
+            document.getElementById("photoUrl").value =photoUrl;
             
             
         }
@@ -382,6 +389,7 @@
                             <th>Answer 4</th>
                             <th>Timer</th>
                             <th>Info url</th>
+                            <th>photo url</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -389,7 +397,17 @@
                         {%if q.cat==cat.cat%}
                         <tr>
                             <td>
+                                <a href="#editEmployeeModal"  class="edit" data-toggle="modal"><i id={{q.id}}
+                                        class="material-icons" onClick="edit_click(this.id,'{{q.cat}}','{{q.question}}','{{q.correct}}','{{q.answer1}}',
+                                        '{{q.answer2}}','{{q.answer3}}','{{q.answer4}}','{{q.timer}}','{{q.url}}','{{q.photoUrl}}')" data-toggle="tooltip"
+                                        title="Edit">&#xE254;</i></a>
+                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i id={{q.id}}
+                                        class="material-icons" onClick="delete_click(this.id)" data-toggle="tooltip"
+                                        title="Delete">&#xE872;</i></a>
+                                
                             </td>
+                            <!-- <td>
+                            </td> -->
                             <td>{{q.question}}</td>
                             <td>{{q.correct}}</td>
                             <td>{{q.answer1}}</td>
@@ -398,16 +416,7 @@
                             <td>{{q.answer4}}</td>
                             <td>{{q.timer}}</td>
                             <td>{{q.url}}</td>
-                            <td>
-                                <a href="#editEmployeeModal"  class="edit" data-toggle="modal"><i id={{q.id}}
-                                        class="material-icons" onClick="edit_click(this.id,'{{q.cat}}','{{q.question}}','{{q.correct}}','{{q.answer1}}',
-                                        '{{q.answer2}}','{{q.answer3}}','{{q.answer4}}','{{q.timer}}','{{q.url}}')" data-toggle="tooltip"
-                                        title="Edit">&#xE254;</i></a>
-                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i id={{q.id}}
-                                        class="material-icons" onClick="delete_click(this.id)" data-toggle="tooltip"
-                                        title="Delete">&#xE872;</i></a>
-                                
-                            </td>
+                            <td>{{q.photoUrl}}</td>
                         </tr>
                         {%endif%}
                         {%endfor%}
@@ -459,6 +468,10 @@
                         <div class="form-group">
                             <label>URL</label>
                             <input type="text" name="url" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>photoUrl</label>
+                            <input type="text" name="photoUrl" class="form-control" required>
                         </div>
                         <input type="hidden" id="addphide" name="addphide" value="0" />
                     </div>
@@ -542,6 +555,10 @@
                         <div class="form-group">
                             <label>URL</label>
                             <input type="text" id="url" name="url" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>photo URL</label>
+                            <input type="text" name="photoUrl" class="form-control" required>
                         </div>
                         <input type="hidden" id="editId" name="editId" value="" />
                         <input type="hidden" id="editphide" name="editphide" value="0" />

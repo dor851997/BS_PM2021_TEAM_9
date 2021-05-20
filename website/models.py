@@ -44,6 +44,7 @@ class Question(db.Model):
     timer=db.Column(db.Integer,default=30)
     wrongs=db.Column(db.Integer,default=0)
     corrects=db.Column(db.Integer,default=0)
+    photoUrl = db.Column(db.String(2000))
 
 class QuestionCategory(db.Model):
     id = db.Column(db.Integer, primary_key=True)

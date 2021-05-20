@@ -17,9 +17,11 @@
           <div id="qq" class="modal-header">
               <h2 ><span class="label label-warning" id="question">{{question.question}}</span></h2>
           </div>
+          {%if question.photoUrl != None %}
           <div id="img1">
             <img src={{question.photoUrl}} class="card-img-top" alt="..." style="height: 15rem; width: 25rem; margin-left: 125px;">
           </div>
+          {%endif%}
           <div class="modal-body">
                 <div class="col-xs-3 col-xs-offset-5">
                   <div id="loadbar" style="display: none;">

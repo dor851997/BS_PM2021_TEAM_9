@@ -123,7 +123,6 @@ def kidPage():
             list_dump=[]
             cat=request.form["cat"]
             session["category"] =cat
-            print(request.form["pick"])
             if request.form["pick"]=="table":
                 return redirect(url_for('views.score_table'))  
             if cat == "Animal":
@@ -357,7 +356,6 @@ def contentManagement():
             db.session.add(question)
             db.session.commit()
         elif request.form.get("deletephide")=="1":
-            print("delete")
             question=Question.query.filter_by(id = int(request.form.get("deleteId"))).first()
             db.session.delete(question)
             db.session.commit()

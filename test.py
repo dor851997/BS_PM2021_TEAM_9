@@ -5,11 +5,55 @@ from flask import session
 from website import db
 from website.models import  User, Question, QuestionCategory, MailBox ,Background,Score
 
+import time
+from unittest import TextTestRunner
+from unittest.runner import TextTestResult
 
 
-class LoginTestCase(unittest.TestCase):
+class TimeLoggingTestResult(TextTestResult):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.test_timings = []
+
+    def startTest(self, test):
+        self._test_started_at = time.time()
+        super().startTest(test)
+
+    def addSuccess(self, test):
+        elapsed = time.time() - self._test_started_at
+        name = self.getDescription(test)
+        self.test_timings.append((name, elapsed))
+        super().addSuccess(test)
+
+    def getTestTimings(self):
+        return self.test_timings    
+
+class TimeLoggingTestRunner(unittest.TextTestRunner):
     
-    #Ensure that flask was set up corrently
+    def __init__(self, slow_test_threshold=0.01, *args, **kwargs):
+        print(slow_test_threshold)
+        self.slow_test_threshold = slow_test_threshold
+        return super().__init__(
+            resultclass=TimeLoggingTestResult,
+            *args,
+            **kwargs,
+        )
+    def run(self, test):
+        result = super().run(test)
+        self.stream.writeln(
+            "\nSlow Tests (>{:.03}s):".format(
+                self.slow_test_threshold))
+        for name, elapsed in result.getTestTimings():
+            if elapsed > self.slow_test_threshold:
+                self.stream.writeln(
+                    "({:.03}s) {}".format(
+                        elapsed, name))
+        return result
+
+
+
+class LoginTestCases(unittest.TestCase):    
+#Ensure that flask was set up corrently
     def test_Login_response(self):
         tester = app.test_client(self)
         response = tester.get('/', content_type='html/text')
@@ -95,7 +139,7 @@ class KidTestCase(unittest.TestCase):
             follow_redirects=True
         )
         return tester
-  
+
     #Ensure that flask was set up corrently
     def test_Kid_Page_response(self):
         tester = app.test_client(self)
@@ -116,26 +160,26 @@ class KidTestCase(unittest.TestCase):
         self.assertIn(b'Color', response.data)
         
     def test_Animal_Category(self):
-        response=self.Post_Response_Quiz_Page("Animal")
+        response=self.Post_Response_Quiz_Page(category="Animal")
         self.assertIn(b'Animal Questions', response.data)
-       
+    
     def test_Nature_Category(self):
-        response=self.Post_Response_Quiz_Page("Nature")
+        response=self.Post_Response_Quiz_Page(category="Nature")
         self.assertIn(b'Nature Questions', response.data)
     
     def test_Math_Category(self):
-        response=self.Post_Response_Quiz_Page("Math")
+        response=self.Post_Response_Quiz_Page(category="Math")
         self.assertIn(b'Math Questions', response.data)
     
     def test_History_Category(self):
-        response=self.Post_Response_Quiz_Page("History")
+        response=self.Post_Response_Quiz_Page(category="History")
         self.assertIn(b'History Questions', response.data) 
 
     def test_Color_Category(self):
-        response=self.Post_Response_Quiz_Page("Color")
+        response=self.Post_Response_Quiz_Page(category="Color")
         self.assertIn(b'Color Questions', response.data) 
     def test_Finish_Quiz(self):
-        tester=self.Post_Tester_Quiz_Page("Animal")
+        tester=self.Post_Tester_Quiz_Page(category="Animal")
         response=tester.post(
             '/question',
             data=dict(finish1="1"),
@@ -144,7 +188,7 @@ class KidTestCase(unittest.TestCase):
         self.assertIn(b'kidPage', response.data) 
 
     def test_Quiz_Answer_Wrong(self):
-        tester=self.Post_Tester_Quiz_Page("Animal")
+        tester=self.Post_Tester_Quiz_Page(category="Animal")
         response=tester.post(
             '/question',
             data=dict(q_answer=""),
@@ -152,7 +196,7 @@ class KidTestCase(unittest.TestCase):
         )
         self.assertIn(b'info', response.data)
     def test_InfoPage_BackToKidPage(self):
-        tester=self.Post_Tester_Quiz_Page("Animal")
+        tester=self.Post_Tester_Quiz_Page(category="Animal")
         tester.post(
             '/question',
             data=dict(q_answer=""),
@@ -279,9 +323,18 @@ class AdminTestCase(unittest.TestCase):
 
 
 class EditorTestCase(unittest.TestCase):
-    #Ensure that flask was set up corrently
-    def test_Editor_Page_response(self):
+#Ensure that flask was set up corrently
+    def Post_tester_Editor_Page(self):
         tester = app.test_client(self)
+        tester.post(
+            '/',
+            data=dict(email="editor@gmail.com", password="1234567"),
+            follow_redirects=True
+        )
+        return tester
+
+    def test_Editor_Page_response(self):
+        tester = self.Post_tester_Editor_Page()
         tester.post(
             '/',
             data=dict(email="editor@gmail.com", password="1234567"),
@@ -289,6 +342,62 @@ class EditorTestCase(unittest.TestCase):
         )
         response=tester.get('/editorPage')
         self.assertEqual(response.status_code, 200)
+
+
+    def test_Editor_Content_Management_response(self):
+        tester=self.Post_tester_Editor_Page()
+        response=tester.get('/contentManagement', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'contentManagement', response.data)
+
+
+
+    def test_Editor_Content_Management_Add(self):
+        tester=self.Post_tester_Editor_Page()
+        tester.get('/contentManagement', follow_redirects=True)
+        response=tester.post(
+            '/contentManagement',
+            data=dict(addphide="1",category="Animal",question="why the bear?",correct_ans="a",answer1="a"
+            ,answer2="b",answer3="c",answer4="d",url="asdads",photoUrl="asdasd"),
+            follow_redirects=True
+        )
+        self.assertIn(b'contentManagement', response.data) 
+
+    
+    def test_Editor_Content_Management_Edit(self):
+        tester=self.Post_tester_Editor_Page()
+        tester.get('/contentManagement', follow_redirects=True)
+        response=tester.post(
+            '/contentManagement',
+            data=dict(editphide="1",editId="2",category="Animal",question="Which animal is a predator?",correct_ans="Lion",answer1="Monkey"
+            ,answer2="Elephant",answer3="Giraffe",answer4="Lion",url="https://en.wikipedia.org/wiki/Lion",photoUrl=""),
+            follow_redirects=True
+        )
+        self.assertIn(b'contentManagement', response.data) 
+
+
+    def test_Editor_Content_Management_Delete(self):
+        tester=self.Post_tester_Editor_Page()
+        tester.get('/contentManagement', follow_redirects=True)
+        response=tester.post(
+            '/contentManagement',
+            data=dict(deletephide="1",deleteId="18"),
+            follow_redirects=True
+        )
+        self.assertIn(b'contentManagement', response.data) 
+
+
+    def test_Editor_MailBox_response(self):
+        tester=self.Post_tester_Editor_Page()
+        response=tester.get('/mailBoxEditor', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'mailBoxEditor', response.data)
+
+    def test_Editor_QuestionsReport_response(self):
+        tester=self.Post_tester_Editor_Page()
+        response=tester.get('/questionsReport', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'questionsReport', response.data)
 
     def test_editor_logout(self):
         tester = app.test_client()
@@ -299,7 +408,11 @@ class EditorTestCase(unittest.TestCase):
         )
         response = tester.get('/logout', follow_redirects=True)
         self.assertIn(b'Login', response.data)
-    
 
-if __name__ == '__name__':
-    unittest.main()
+
+
+if __name__ == '__main__':
+    test_runner = TimeLoggingTestRunner(slow_test_threshold=0.04)
+    unittest.main(testRunner=test_runner)
+    # unittest.main()
+

@@ -52,7 +52,7 @@ class TimeLoggingTestRunner(unittest.TextTestRunner):
 
 
 
-class LoginTestCases(unittest.TestCase):    
+class LoginTestCase(unittest.TestCase):    
 #Ensure that flask was set up corrently
     def test_Login_response(self):
         tester = app.test_client(self)

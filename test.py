@@ -9,9 +9,9 @@ import time
 from unittest import TextTestRunner
 from unittest.runner import TextTestResult
 
-# import smtplib
-# from email.mime.multipart import MIMEMultipart
-# from email.mime.text import MIMEText
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 
 
@@ -46,9 +46,9 @@ class TimeLoggingTestRunner(unittest.TextTestRunner):
     def run(self, test):
         result = super().run(test)
         Success=result.testsRun-len(result.failures)
-        # mail_content = ''
+        mail_content = ''
         
-        # mail_content+="\nSuccessed Tests (%d test\s):\n"%Success
+        mail_content+="\nSuccessed Tests (%d test\s):\n"%Success
         self.stream.writeln(
             "\nSuccessed Tests (%d test\s):"%
                 Success)
@@ -56,34 +56,34 @@ class TimeLoggingTestRunner(unittest.TextTestRunner):
         
         for name, elapsed in result.getTestTimings():
 
-                # mail_content+="({:.03}s) {}\n".format(elapsed, name)
+                mail_content+="({:.03}s) {}\n".format(elapsed, name)
                 self.stream.writeln(
                     "({:.03}s) {}".format(
                         elapsed, name))
         
-        # mail_content+="\nFailed Tests (%d test\s):\n"%len(result.failures)
+        mail_content+="\nFailed Tests (%d test\s):\n"%len(result.failures)
         self.stream.writeln(
             "\nFailed Tests (%d test\s):"%
                 len(result.failures))
 
         for name, err in result.failures:
-                # mail_content+="{}\n".format(name)
+                mail_content+="{}\n".format(name)
                 self.stream.writeln(
                     "{}".format(
                         name))
 
-        # mail_content+="\nSlow Tests (>{:.03}s):\n".format(self.slow_test_threshold)
+        mail_content+="\nSlow Tests (>{:.03}s):\n".format(self.slow_test_threshold)
         self.stream.writeln(
             "\nSlow Tests (>{:.03}s):".format(
                 self.slow_test_threshold))
 
         for name, elapsed in result.getTestTimings():
             if elapsed > self.slow_test_threshold:
-                # mail_content+="({:.03}s) {}\n".format(elapsed, name)
+                mail_content+="({:.03}s) {}\n".format(elapsed, name)
                 self.stream.writeln(
                     "({:.03}s) {}".format(
                         elapsed, name))
-        # SendMail(mail_content=mail_content)
+        SendMail(mail_content=mail_content)
         return result
 
 
@@ -447,24 +447,24 @@ class EditorTestCase(unittest.TestCase):
 
 
 
-# def SendMail(mail_content):
-#     sender_address = 'webappsce@gmail.com'
-#     sender_pass = 'sce12345'
-#     receiver_address = 'webappscereceive@gmail.com'
-#     #Setup the MIME
-#     message = MIMEMultipart()
-#     message['From'] = sender_address
-#     message['To'] = receiver_address
-#     message['Subject'] = 'Measure amount of Success tests against Failed tests + Slow Unit Tests Execution Time'   #The subject line
-#     #The body and the attachments for the mail
-#     message.attach(MIMEText(mail_content, 'plain'))
-#     #Create SMTP session for sending the mail
-#     session = smtplib.SMTP_SSL('smtp.gmail.com', 465) #use gmail with port
-#     session.ehlo()
-#     session.login(sender_address, sender_pass) #login with mail_id and password
-#     text = message.as_string()
-#     session.sendmail(sender_address, receiver_address, text)
-#     session.quit()
+def SendMail(mail_content):
+    sender_address = 'webappsce@gmail.com'
+    sender_pass = 'sce12345'
+    receiver_address = 'webappscereceive@gmail.com'
+    #Setup the MIME
+    message = MIMEMultipart()
+    message['From'] = sender_address
+    message['To'] = receiver_address
+    message['Subject'] = 'Measure amount of Success tests against Failed tests + Slow Unit Tests Execution Time'   #The subject line
+    #The body and the attachments for the mail
+    message.attach(MIMEText(mail_content, 'plain'))
+    #Create SMTP session for sending the mail
+    session = smtplib.SMTP_SSL('smtp.gmail.com', 465) #use gmail with port
+    session.ehlo()
+    session.login(sender_address, sender_pass) #login with mail_id and password
+    text = message.as_string()
+    session.sendmail(sender_address, receiver_address, text)
+    session.quit()
 
 if __name__ == '__main__':
     test_runner = TimeLoggingTestRunner(slow_test_threshold=0.04)

@@ -9,9 +9,9 @@ import time
 from unittest import TextTestRunner
 from unittest.runner import TextTestResult
 
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+# import smtplib
+# from email.mime.multipart import MIMEMultipart
+# from email.mime.text import MIMEText
 
 
 
@@ -83,7 +83,7 @@ class TimeLoggingTestRunner(unittest.TextTestRunner):
                 self.stream.writeln(
                     "({:.03}s) {}".format(
                         elapsed, name))
-        SendMail(mail_content=mail_content)
+        # SendMail(mail_content=mail_content)
         return result
 
 

@@ -19,7 +19,7 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user:
             if check_password_hash(user.password, password):
-                if( is_time_between(time(8,00), time(20,00)) == True  and  user.auth=="kid"):
+                if( is_time_between(time(8,00), time(20,00)) != True  and  user.auth=="kid"):
                         flash('kid user can only use this website between 8AM ~ 8PM',category='error')
                         return redirect(url_for('auth.login'))
                 flash('Logged in successfully!', category='success')

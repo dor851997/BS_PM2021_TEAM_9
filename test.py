@@ -45,14 +45,45 @@ class TimeLoggingTestRunner(unittest.TextTestRunner):
         )
     def run(self, test):
         result = super().run(test)
+        Success=result.testsRun-len(result.failures)
+        mail_content = ''
+        
+        mail_content+="\nSuccessed Tests (%d test\s):\n"%Success
         self.stream.writeln(
-            "\nSlow Tests (>{:.03}s):".format(
-                self.slow_test_threshold))
+            "\nSuccessed Tests (%d test\s):"%
+                Success)
+
+        
         for name, elapsed in result.getTestTimings():
-            if elapsed > self.slow_test_threshold:
+
+                mail_content+="({:.03}s) {}\n".format(elapsed, name)
                 self.stream.writeln(
                     "({:.03}s) {}".format(
                         elapsed, name))
+        
+        mail_content+="\nFailed Tests (%d test\s):\n"%len(result.failures)
+        self.stream.writeln(
+            "\nFailed Tests (%d test\s):"%
+                len(result.failures))
+
+        for name, err in result.failures:
+                mail_content+="{}\n".format(name)
+                self.stream.writeln(
+                    "{}".format(
+                        name))
+
+        mail_content+="\nSlow Tests (>{:.03}s):\n".format(self.slow_test_threshold)
+        self.stream.writeln(
+            "\nSlow Tests (>{:.03}s):".format(
+                self.slow_test_threshold))
+
+        for name, elapsed in result.getTestTimings():
+            if elapsed > self.slow_test_threshold:
+                mail_content+="({:.03}s) {}\n".format(elapsed, name)
+                self.stream.writeln(
+                    "({:.03}s) {}".format(
+                        elapsed, name))
+        SendMail(mail_content=mail_content)
         return result
 
 

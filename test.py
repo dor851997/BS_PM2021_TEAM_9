@@ -417,7 +417,7 @@ class EditorTestCase(unittest.TestCase):
         tester.get('/contentManagement', follow_redirects=True)
         response=tester.post(
             '/contentManagement',
-            data=dict(deletephide="1",deleteId="18"),
+            data=dict(deletephide="1",deleteId="22"),
             follow_redirects=True
         )
         self.assertIn(b'contentManagement', response.data) 

@@ -329,7 +329,7 @@ def contentManagement():
     cat=QuestionCategory.query.all()
     if request.method == 'POST':
         if request.form.get("addphide")=="1":
-            cat = request.form.get('category')
+            cate = request.form.get('category')
             que = request.form.get('question')
             correct_ans = request.form.get('correct_ans')
             answer1 = request.form.get('answer1')
@@ -338,7 +338,7 @@ def contentManagement():
             answer4 = request.form.get('answer4')
             url = request.form.get('url')
             photoUrl = request.form.get('photoUrl')
-            question = Question(cat = cat, question = que, correct = correct_ans, answer1 = answer1, answer2 = answer2, answer3 = answer3, answer4 = answer4, url = url ,photoUrl=photoUrl)
+            question = Question(cat = cate, question = que, correct = correct_ans, answer1 = answer1, answer2 = answer2, answer3 = answer3, answer4 = answer4, url = url ,photoUrl=photoUrl)
             db.session.add(question)
             db.session.commit()
         elif request.form.get("editphide")=="1":
